@@ -4,6 +4,34 @@ import loginImg from "../../login.jpg";
 export class Register extends React.Component {
   constructor(props) {
     super(props);
+    this.handleChange1 = this.handleChange1.bind(this);
+    this.handleChange2= this.handleChange2.bind(this);
+    this.handleChange3 = this.handleChange3.bind(this);
+  }
+  state = {
+    email : "",
+    password : "",
+    contact : ""
+  }
+  handleChange1(event) {
+    this.setState({email: event.target.value});
+  }
+  handleChange2(event) {
+    this.setState({password: event.target.value});
+  }
+  handleChange3(event) {
+    this.setState({contact: event.target.value});
+  }
+  register = () => {
+    console.log(this.state.email);
+    console.log(this.state.password);
+    console.log(this.state.contact);
+
+    /*const url = "localhost:8080/events";
+    const res = fetch(url);
+    const data = res.json();
+    console.log(data);
+    */
   }
 
   render() {
@@ -14,24 +42,40 @@ export class Register extends React.Component {
             <img src={loginImg} />
           </div>
           <div className="form">
-            <div className="form-group">
+          <div className="form-group">
               <label htmlFor="email">Email</label>
-              <input type="email" name="email" placeholder="example@domain.com"  required />
+              <input type = "text"
+                placeholder="Email"
+                autoCapitalize="none"
+                placeholderTextColor="lightgrey"
+                //value = {this.state.email}
+                onChange={this.handleChange1}
+              />
             </div>
             <div className="form-group">
-              <label htmlFor="phone">Contact Number</label>
-              <input type="number" name="phone" placeholder="Contact Number" required />
+              <label htmlFor="contact">Contact Number</label>
+              <input type = "text"
+                placeholder="contact"
+                autoCapitalize="none"
+                placeholderTextColor="lightgrey"
+                //value = {this.state.email}
+                onChange={this.handleChange3}
+              />
             </div>
             <div className="form-group">
               <label htmlFor="password">Password</label>
-              <input type="text" name="password" placeholder="password" required/>
+              <input type = "text"
+                placeholder="password"
+                autoCapitalize="none"
+                placeholderTextColor="lightgrey"
+                //value = {this.state.email}
+                onChange={this.handleChange2}
+              />
             </div>
           </div>
         </div>
         <div className="footer">
-          <button type="button" className="btn">
-            Register
-          </button>
+        <input type="button" class="btn btn-primary" onClick={this.register} value = "Register"/>
         </div>
       </div>
     );
