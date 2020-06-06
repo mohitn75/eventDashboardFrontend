@@ -1,7 +1,8 @@
 import React from "react";
 import loginImg from "../../login.jpg";
+import { withRouter } from 'react-router-dom';
 
-export class Register extends React.Component {
+class Register extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange1 = this.handleChange1.bind(this);
@@ -32,6 +33,7 @@ export class Register extends React.Component {
     const data = res.json();
     console.log(data);
     */
+    this.props.history.push('/dash') 
   }
 
   render() {
@@ -39,7 +41,7 @@ export class Register extends React.Component {
       <div className="base-container" ref={this.props.containerRef}>
         <div className="content">
           <div className="image">
-            <img src={loginImg} />
+            <img src={loginImg} alt="logo"/>
           </div>
           <div className="form">
           <div className="form-group">
@@ -81,3 +83,4 @@ export class Register extends React.Component {
     );
   }
 }
+export default withRouter(Register);

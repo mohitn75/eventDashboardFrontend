@@ -3,11 +3,26 @@ import ReactDOM from 'react-dom';
 import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { Route, BrowserRouter } from 'react-router-dom';
+import Calendar from './components/main/Calendar';
+import Alerts from './components/main/Alerts';
+import Dash from './components/main/Dash';
+
+const stack= (
+     
+   < BrowserRouter >
+      <div>
+        
+         <Route exact path="/" component={App} />
+         <Route exact path="/dash" component={Dash} />
+         <Route path="/calendar" component={Calendar} />
+         <Route path="/alerts" component={Alerts} />
+      </div>
+   </ BrowserRouter >
+);
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  stack,
   document.getElementById('root')
 );
 
