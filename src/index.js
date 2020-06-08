@@ -18,7 +18,7 @@ const stack= (
    < BrowserRouter >
       <div>
         
-         <Route exact path="/" component={CDash} />
+         <Route exact path="/" component={App} />
          <Route exact path="/dash" component={Dash} />
          <Route path="/calendar" component={Calendar} />
          <Route path="/alerts" component={Alerts} />
