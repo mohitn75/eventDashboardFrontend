@@ -1,13 +1,13 @@
 import React from "react";
 import loginImg from "../../login.jpg";
 import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.handleChange1 = this.handleChange1.bind(this);
-    this.handleChange2= this.handleChange2.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   state = {
@@ -15,22 +15,24 @@ class Login extends React.Component {
     password : "",
     role : ""
   }
-  handleChange1(event) {
-    this.setState({email: event.target.value});
-  }
-  handleChange2(event) {
-    this.setState({password: event.target.value});
+  handleChange(event) {
+    this.setState({
+      [event.target.name] : event.target.value
+    });
   }
    signUp = () => {
-    console.log(this.state.email);
-    console.log(this.state.password);
+     axios.get("http://localhost:8080/api/events")
+          .then(response => console.log(response.data));
+    //axios.post("http://localhost:8080/api/addEvent",{'title':'meet '});
+    //console.log(this.state.email);
+    //console.log(this.state.password);
     /*const url = "localhost:8080/events";
     const res = fetch(url);
     const data = res.json();
     console.log(data);
     */
     //this.setState
-    this.props.history.push('/dash') 
+    this.props.history.push('/cdash') 
   }
 
   render() {
@@ -47,8 +49,9 @@ class Login extends React.Component {
                 placeholder="Email"
                 autoCapitalize="none"
                 placeholderTextColor="lightgrey"
-                //value = {this.state.email}
-                onChange={this.handleChange1}
+                name = "email"
+                value = {this.state.email}
+                onChange={this.handleChange}
               />
             </div>
             <div className="form-group">
@@ -57,8 +60,9 @@ class Login extends React.Component {
                 placeholder="Password"
                 autoCapitalize="none"
                 placeholderTextColor="lightgrey"
-                //value = {this.state.password}
-                onChange={this.handleChange2}
+                name = "password"
+                value = {this.state.password}
+                onChange={this.handleChange}
               />
             </div>
           </div>
