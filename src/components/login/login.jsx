@@ -12,7 +12,8 @@ class Login extends React.Component {
 
   state = {
     email : "",
-    password : ""
+    password : "",
+    role : ""
   }
   handleChange1(event) {
     this.setState({email: event.target.value});
@@ -28,6 +29,7 @@ class Login extends React.Component {
     const data = res.json();
     console.log(data);
     */
+    //this.setState
     this.props.history.push('/dash') 
   }
 
