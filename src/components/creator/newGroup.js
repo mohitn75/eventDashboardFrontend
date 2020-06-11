@@ -1,48 +1,76 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import './material.css'
+import axios from 'axios';
+import NavBar from './NavBar';
 
 class newGroup extends React.Component {
-    render(){
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    }
+    state = {
+    group:"",
+    mails:"",
+
+    };
+  
+  handleChange(event) {
+    this.setState({
+      [event.target.name] : event.target.value
+    });
+  }
+
+  submit= () =>{
+    return(
+    //console.log(this.title.value),
+    //console.log(this.state.emails),
+    //alert(this.state.group),
+    axios.post("/api/addGroup",
+    {
+      'groupname':this.state.group,
+      'groupusers':this.state.mails
+    }).then((error)=>{
+      alert(error.data)
+    })
+    );  
+  }
+
+  fetch = () =>{
+  //var axios = require('axios');
+  var data = JSON.stringify(
+  {
+    "groupname":this.state.group,
+  "groupusers":this.state.mails
+});
+
+var config = {
+  method: 'post',
+  url: 'api/addGroup',
+  headers: { 
+    'Authorization': 'Basic ZGlwYW5zaGk2MDBAZ21haWwuY29tOmRk', 
+    'Content-Type': 'application/json'
+  },
+  data : data
+};
+
+axios(config)
+.then(function (response) {
+  console.log(JSON.stringify(response.data));
+})
+.catch(function (error) {
+  console.log(error);
+});
+
+  }
+  render(){
+    //this.fetch()
+      
   return (
-     <div >
     
+     <div >
   <div class="wrapper ">
-    <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
- 
-      <div class="logo simple-text logo-normal">
-          USER NAME
-        </div>
-      <div class="sidebar-wrapper">
-         <ul class="nav">
-          <li class="nav-item ">
-            <a class="nav-link" href="/cdash">
-              <p>Dashboard</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="/ccalendar">
-              <p>Calendar</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="/newevent">
-              <p>Create Event</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="/newgroup">
-              <p>Create Group</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="/calerts">
-              <p>Alerts</p>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <NavBar current='newgroup' />
     <div class="main-panel">
       <div class="content">
         <div class="container-fluid">
@@ -50,85 +78,36 @@ class newGroup extends React.Component {
             <div class="col-md-8">
               <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 class="card-title">Edit Profile</h4>
-                  <p class="card-category">Complete your profile</p>
+                  <h4 class="card-title">New Group</h4>
+                  <p class="card-category">Create a new group of recipients</p>
                 </div>
                 <div class="card-body">
                   <form>
                     <div class="row">
                       <div class="col-md-5">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Company (disabled)</label>
-                          <input type="text" class="form-control" disabled />
+                          <label class="bmd-label-floating">Group Title</label>
+                          <input type="text" class="form-control" 
+                          name="group"
+                          onChange={this.handleChange} />
                         </div>
                       </div>
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Username</label>
-                          <input type="text" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Email address</label>
-                          <input type="email" class="form-control" />
-                        </div>
-                      </div>
-                    </div>
+                     </div> 
+                     <br />
                     <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Fist Name</label>
-                          <input type="text" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Last Name</label>
-                          <input type="text" class="form-control" />
-                        </div>
-                      </div>
+                    <div class="col-md-12">
+                    <div class="form-group">
+                    <label class="bmd-label-floating">Email (separate each email with a comma, 
+                    like: mail@example.com, mail2@example.com)</label>
+                    <input type="email" class="form-control" multiple 
+                    name = "mails" 
+                    onChange={this.handleChange}/>
                     </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Adress</label>
-                          <input type="text" class="form-control" />
-                        </div>
-                      </div>
                     </div>
-                    <div class="row">
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">City</label>
-                          <input type="text" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Country</label>
-                          <input type="text" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Postal Code</label>
-                          <input type="text" class="form-control" /> 
-                        </div>
-                      </div>
                     </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group">
-                          <label>About Me</label>
-                          <div class="form-group">
-                            <label class="bmd-label-floating"> Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</label>
-                            <textarea class="form-control" rows="5"></textarea>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary pull-right">Update Profile</button>
+                    
+                    <button type="submit" class="btn btn-primary pull-right" 
+                    onClick={()=>this.fetch()}>Create group</button>
                     <div class="clearfix"></div>
                   </form>
                 </div>
@@ -136,18 +115,13 @@ class newGroup extends React.Component {
             </div>
             <div class="col-md-4">
               <div class="card card-profile">
-                <div class="card-avatar">
-                  <a href="javascript:;">
-                    <img class="img" src="../assets/img/faces/marc.jpg" />
-                  </a>
-                </div>
+                
                 <div class="card-body">
-                  <h6 class="card-category text-gray">CEO / Co-Founder</h6>
-                  <h4 class="card-title">Alec Thompson</h4>
+                  <h4 class="card-title">Existing Groups</h4>
                   <p class="card-description">
-                    Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
+
                   </p>
-                  <a href="javascript:;" class="btn btn-primary btn-round">Follow</a>
+                  
                 </div>
               </div>
             </div>

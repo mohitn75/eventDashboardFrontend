@@ -8,6 +8,10 @@
   box-sizing: border-box;
 }
 
+.sidebar-wrapper .active{
+  background-color:#9c27b0;
+}
+
 html {
   font-family: sans-serif;
   line-height: 1.15;
@@ -2737,6 +2741,8 @@ select.form-control-lg:not([size]):not([multiple]),
 .form-inline .form-check {
   width: 100%;
 }
+
+
 
 @media (min-width: 576px) {
   .form-inline label {

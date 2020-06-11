@@ -1,48 +1,48 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import './material.css'
+import Table from './Table'
+import NavBar from './NavBar';
 
 class  CDash extends React.Component {
+  data = [
+    {
+'Title':'Hii Connect',	
+'Place':'Meet room 1',	
+'Time':'13:00 - 13:30',	
+'Date':'8 June 2020' ,
+'Host':'Head'
+},
+{
+'Title':'Hii Connect',	
+'Place':'Meet room 1',	
+'Time':'13:00 - 13:30',	
+'Date':'8 June 2020' ,
+'Host':'Head'
+},
+{
+'Title':'Training',	
+'Place':'Hall',	
+'Time':'13:00 - 13:30',	
+'Date':'8 June 2020' ,
+'Host':'Head'
+},
+{
+'Title':'Training',	
+'Place':'Hall',	
+'Time':'13:00 - 13:30',	
+'Date':'8 June 2020' ,
+'Host':'Head'
+}
+ ]
+
+ total = this.data.length
   render(){
   return (
      <div >
     
   <div class="wrapper ">
-    <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
- 
-      <div class="logo">
-          USER NAME
-        </div>
-      <div class="sidebar-wrapper">
-        <ul class="nav">
-          <li class="nav-item ">
-            <a class="nav-link" href="/cdash">
-              <p>Dashboard</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="/ccalendar">
-              <p>Calendar</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="/newevent">
-              <p>Create Event</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="/newgroup">
-              <p>Create Group</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="/calerts">
-              <p>Alerts</p>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <NavBar current='dashboard' />
     <div class="main-panel">
       <div class="content">
         <div class="container-fluid">
@@ -54,7 +54,7 @@ class  CDash extends React.Component {
                     <i class="material-icons">I</i>
                   </div>
                   <p class="card-category">Total Events</p>
-                  <h3 class="card-title">12
+                  <h3 class="card-title" >{this.total}
                   </h3>
                 </div>
                 <div class="card-footer">
@@ -169,7 +169,23 @@ class  CDash extends React.Component {
                   <p class="card-category">All events</p>
                 </div>
                 <div class="card-body table-responsive">
-                  <table class="table table-hover">
+                <Table data={this.data}/>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>   
+);
+}
+}
+export default withRouter(CDash);
+/*
+<table class="table table-hover">
                     <thead class="text-warning">
                       <th>Title</th>
                       <th>Place</th>
@@ -194,16 +210,4 @@ class  CDash extends React.Component {
                       </tr>
                     </tbody>
                   </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>   
-);
-}
-}
-export default withRouter(CDash);
+                  */

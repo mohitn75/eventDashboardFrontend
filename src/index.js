@@ -12,6 +12,10 @@ import CCalendar from './components/creator/Calendar';
 import CAlerts from './components/creator/Alerts';
 import newEvent from './components/creator/newEvent';
 import newGroup from './components/creator/newGroup';
+import test from './components/creator/test';
+import delEvent from './components/creator/delEvent';
+
+
 
 const stack= (
      
@@ -27,6 +31,7 @@ const stack= (
          <Route path="/calerts" component={CAlerts} />
          <Route path="/newevent" component={newEvent} />
          <Route path="/newgroup" component={newGroup} />
+         <Route path="/delevent" component={delEvent} />
       </div>
    </ BrowserRouter >
 );
