@@ -2,11 +2,13 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import './material.css'
 import axios from 'axios';
+import NavBar from './NavBar';
 
 class newEvent extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.fetch = this.fetch.bind(this);
     }
     state = {
     cur : 'all',
@@ -19,8 +21,9 @@ class newEvent extends React.Component {
     en_time :"",
     target :"",
     type :"",
-    tar :"",
-    isDisplayed :false,
+    current:"newevent",
+    cla:""
+
     };
   
   handleChange(event) {
@@ -29,62 +32,50 @@ class newEvent extends React.Component {
     });
   }
 
-  submit= () =>{
-    return(
-    //console.log(this.title.value),
-    //console.log(this.state.tar),
-    //alert("hell")
-    axios.post("http://localhost:8080/api/addEvent",
-    {
-      'title':this.state.title,
-      'description':this.state.desc,
-      'type':this.state.type
-    })
+  
 
+  fetch = () =>{
+    //var axios = require('axios');
+var data = JSON.stringify(
+  {
+    "title":this.state.title,
+  "email":this.state.email,
+"description":this.state.desc,
+"type":this.state.type,
+"startDateTime":this.state.st_date+'T'+this.state.st_time,
+"endDateTime":this.state.en_date+'T'+this.state.en_time,
+});
 
-    );
-    
+var config = {
+  method: 'post',
+  url: 'api/addEvent',
+  headers: { 
+    'Authorization': 'Basic ZGlwYW5zaGk2MDBAZ21haWwuY29tOmRk', 
+    'Content-Type': 'application/json'
+  },
+  data : data
+};
+
+axios(config)
+.then(function (response) {
+  console.log(JSON.stringify(response.data));
+  
+})
+.catch(function (error) {
+  console.log(error);
+  console.log("error");
+});
+
   }
+
+  
   render(){
+    //this.submit()
   return (
      <div >
     
   <div class="wrapper ">
-    <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
- 
-      <div class="logo simple-text logo-normal">
-          USER NAME
-        </div>
-      <div class="sidebar-wrapper">
-         <ul class="nav">
-          <li class="nav-item ">
-            <a class="nav-link" href="/cdash">
-              <p>Dashboard</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="/ccalendar">
-              <p>Calendar</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="/newevent">
-              <p>Create Event</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="/newgroup">
-              <p>Create Group</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="/calerts">
-              <p>Alerts</p>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <NavBar current='newevent' />
     <div class="main-panel">
       <div class="content">
         <div class="container-fluid">
@@ -199,7 +190,7 @@ class newEvent extends React.Component {
 
                     <div>
                     {this.state.cur === 'group' ? 
-                    <div class="row">
+                    <div class="row" >
                     <div class="col-md-1"></div>
                     <div class="col-md-11">
                     <div class="form-group">
@@ -244,7 +235,7 @@ class newEvent extends React.Component {
                     </div>
                     <br />
                     <button type="submit" class="btn btn-primary pull-right" 
-                    onClick = {() => this.submit() }>Create Event</button>
+                    onClick = {() => this.fetch() }>Create Event</button>
                     <div class="clearfix"></div>
                   </form>
                 </div>
@@ -260,48 +251,5 @@ class newEvent extends React.Component {
 );
 }
 }
-const Fir = props => {
-  
-  
-  const current = props.current;
-  if(current === 'mail'){
-  return (
-   <div class="row">
-   <div class="col-md-1"></div>
-    <div class="col-md-11">
-    <div class="form-group">
-    <label class="bmd-label-floating">Email (separate each email with a comma, like: mail@example.com, mail2@example.com)</label>
-    <input type="email" class="form-control" multiple 
-    name = "target"
-    //value = {this.state.password}
-    onChange={newEvent.handleChange}/>
-    </div>
-    </div>
-    </div>
-  );
-  }
-  else if(current === 'group'){
-    return (
-      
-      <div class="row">
-      <div class="col-md-1"></div>
-    <div class="col-md-11">
-    <div class="form-group">
-    <label class="bmd-label-floating">Group Name</label>
-    <input type="text" class="form-control" 
-    name = "tar"
-    //value = {newEvent.state.tar}
-    onChange={this.setState({"tar" : "this.value"})}/>
-    </div>
-    </div>
-    </div>
-    )
-  } 
-  else {
-    return (
-      <div></div>
-    )
-  } 
-};
 
 export default withRouter(newEvent);

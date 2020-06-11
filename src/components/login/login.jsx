@@ -21,8 +21,61 @@ class Login extends React.Component {
     });
   }
    signUp = () => {
-     axios.get("http://localhost:8080/api/events")
-          .then(response => console.log(response.data));
+
+     axios.get("/login",          
+     { headers: { 
+       "X-Requested-With" : "XMLHttpRequest",
+       authorization: 'Basic ' + window.btoa(this.state.email + ":" + this.state.password) } }
+             )
+             .then((response) => {
+                console.log(response.data);
+                this.props.history.push('/cdash') 
+                /*axios.get("/api/userByEmail"+this.state.email)
+                  .then((response) =>{
+
+                  },
+                  (error)=>{}
+                  
+                  )
+                
+                */
+                }, (error) => 
+             { 
+             if(error.response.status===401){
+               alert("wrong cred"); 
+             }
+             else if(error.response.status===403){
+               alert("unaccessible"); 
+             }
+             else if(error.response.status===404){
+               alert("page not found"); 
+             }
+             
+             });
+
+///ers=401 wrong cred,,, 403:not accessible,,404
+         //.then(function (response) {
+           // let arr = response.data;
+            //console.log('hel');
+            //console.log(response.data);
+            //if(arr==='success')
+              /*axios.get("http://localhost:8080/api/user../",{
+              params: {
+              email:this.state.email
+              }}
+              )
+                  .then(function (response) {
+                    let role=response.data[0]['role'];
+                    if(role === 'user')
+                    this.props.history.push('/dash') 
+                    else if(role === 'creator')
+                    this.props.history.push('/cdash') 
+
+                  })*/
+           // }
+            //)
+          
+          //.then(response => console.log(response.data));
     //axios.post("http://localhost:8080/api/addEvent",{'title':'meet '});
     //console.log(this.state.email);
     //console.log(this.state.password);
@@ -32,7 +85,8 @@ class Login extends React.Component {
     console.log(data);
     */
     //this.setState
-    this.props.history.push('/cdash') 
+
+    //this.props.history.push('/cdash') 
   }
 
   render() {
