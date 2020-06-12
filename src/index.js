@@ -4,17 +4,14 @@ import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Route, BrowserRouter } from 'react-router-dom';
-import Calendar from './components/main/Calendar';
 import Alerts from './components/main/Alerts';
 import Dash from './components/main/Dash';
 import CDash from './components/creator/Dash';
-import CCalendar from './components/creator/Calendar';
 import CAlerts from './components/creator/Alerts';
 import newEvent from './components/creator/newEvent';
 import newGroup from './components/creator/newGroup';
-import test from './components/creator/test';
-import delEvent from './components/creator/delEvent';
-
+import Calendar from './components/main/Calendar';
+import CCalendar from './components/creator/Calendar';
 
 
 const stack= (
@@ -31,7 +28,6 @@ const stack= (
          <Route path="/calerts" component={CAlerts} />
          <Route path="/newevent" component={newEvent} />
          <Route path="/newgroup" component={newGroup} />
-         <Route path="/delevent" component={delEvent} />
       </div>
    </ BrowserRouter >
 );
@@ -39,6 +35,7 @@ const stack= (
 ReactDOM.render(
   stack,
   document.getElementById('root')
+
 );
 
 // If you want your app to work offline and load faster, you can change
