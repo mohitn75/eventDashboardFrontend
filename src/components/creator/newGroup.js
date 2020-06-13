@@ -3,18 +3,93 @@ import { withRouter } from 'react-router-dom';
 import './material.css'
 import axios from 'axios';
 import NavBar from './NavBar';
+import './autoCompleteText.css';
 
 class newGroup extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
+  constructor (props){
+        super(props);
+        this.state = {
+            items : [],
+            suggestions : [],  
+            text : '', 
+            rtext : ''
+        };
     }
-    state = {
-    group:"",
-    mails:"",
+    componentDidMount(){
+    this.assign();
+  }
 
-    };
+assign= () =>{
+
+  var config = {
+  method: 'get',
+  url: 'http://localhost:8080/api/getEmails'
   
+  };
+axios(config)
+.then( (response) => {
+  console.log(JSON.stringify(response.data));
+  console.log(response.data);
+  this.setState({items:response.data});
+  console.log(this.state.items);
+})
+.catch((error) =>{
+  console.log(error);
+});
+}
+  onTextChanged = (e) => {
+        var value = e.target.value;
+        var i;
+        var j;
+        var lol = value;
+        var flag = 0;
+        this.setState({ text : this.state.text , suggestions : this.state.suggestions , rtext : ""});
+        for(i=value.length-1;i>=0;i--){
+          if(value.charAt(i)==','){
+            j=i;
+            flag = 1;
+            break;
+          }
+        }
+        if(flag === 1){
+          this.setState({ text : this.state.text , suggestions : this.state.suggestions , rtext : value.substring(0,j+1)});
+          value = value.substring(j+1,value.length);
+        }
+        else{
+          lol = value;
+        }
+        console.log("value " + value);
+        console.log("lol" + lol);
+        let suggestions = [];
+        if(value.length > 0){
+            const regex = new RegExp(`${value}`,'i');
+            suggestions = this.state.items.sort().filter(v => regex.test(v));
+        }
+        console.log("rtext" + this.state.rtext);
+        this.setState(() => ({ suggestions , text : lol })); 
+    }
+
+
+  suggestionSelected(value){
+      this.setState(() => ({
+          text : this.state.rtext + value,
+          suggestions : [],
+          rtext : ""
+      }))
+  }
+
+  renderSuggestions (){
+      const {suggestions} =   this.state;
+      if(suggestions.length === 0){
+          return null;
+      }
+      return(
+              <ul>
+                  {suggestions.map((item) => <li onClick = {()=> this.suggestionSelected(item)}>{item}</li>)}
+              </ul>
+      );
+  }
+
   handleChange(event) {
     this.setState({
       [event.target.name] : event.target.value
@@ -65,7 +140,8 @@ axios(config)
   }
   render(){
     //this.fetch()
-      
+    const {text} = this.state;
+
   return (
     
      <div >
@@ -99,9 +175,10 @@ axios(config)
                     <div class="form-group">
                     <label class="bmd-label-floating">Email (separate each email with a comma, 
                     like: mail@example.com, mail2@example.com)</label>
-                    <input type="email" class="form-control" multiple 
-                    name = "mails" 
-                    onChange={this.handleChange}/>
+                    <div className = "autoCompletetext">
+                <input value ={text} onChange = {this.onTextChanged} type = "text " />
+                {this.renderSuggestions()}
+                </div>
                     </div>
                     </div>
                     </div>
