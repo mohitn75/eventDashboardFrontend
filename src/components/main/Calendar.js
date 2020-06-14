@@ -1,6 +1,7 @@
 import React from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
+
 import {  withRouter } from 'react-router-dom';
 import axios from 'axios';
 import '../material.css'
@@ -10,13 +11,15 @@ import NavBar from './NavBar';
 class Calendar extends React.Component {
   state = {
     data : null
-}
+  }
 componentWillMount(){
     var user_id = sessionStorage.getItem("user_id");
     var user_role = sessionStorage.getItem("user_role");
     if(user_id===null || user_role !== 'USER')
       this.props.history.push('/') 
   }
+
+
 
 componentDidMount(){
     this.assign();
@@ -27,6 +30,7 @@ assign= () =>{
   var config = {
   method: 'get',
   url: 'api/eventsByUserId/1'
+
   
   };
 axios(config)
@@ -60,4 +64,6 @@ axios(config)
 );
 }
 }
+
 export default withRouter(Calendar);
+

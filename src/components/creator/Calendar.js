@@ -4,18 +4,21 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import { Route, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import '../material.css'
+
 import NavBar from './NavBar';
 
 class CCalendar extends React.Component {
   state = {
     data : null
 }
+
 componentWillMount(){
     var user_id = sessionStorage.getItem("user_id");
     var user_role = sessionStorage.getItem("user_role");
     if(user_id===null || user_role !== 'CREATOR')
       this.props.history.push('/') 
   }
+
 
 componentDidMount(){
     this.assign();
@@ -26,12 +29,11 @@ assign= () =>{
   var config = {
   method: 'get',
   url: 'api/eventsByUserId/1'
+
   
   };
 axios(config)
 .then( (response) => {
-  //console.log(JSON.stringify(response.data));
-  //console.log(response.data);
   this.setState({data:response.data});
   console.log(this.state.data);
 })

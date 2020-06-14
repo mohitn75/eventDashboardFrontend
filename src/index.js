@@ -18,6 +18,7 @@ import listEvents from './components/creator/listEvents';
 import updateEvent from './components/creator/updateEvent';
 
 
+
 const stack= (
      
    < BrowserRouter >
@@ -36,6 +37,7 @@ const stack= (
          <Route path="/logout" component={logOut} />
          <Route path="/events" component={listEvents} />
          <Route path="/updateevent" component={updateEvent} />
+
       </div>
    </ BrowserRouter >
 );
