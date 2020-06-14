@@ -1,19 +1,29 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import './material.css'
+import '../material.css'
 import axios from 'axios';
 import NavBar from './NavBar';
 import './autoCompleteText.css';
 
 class newGroup extends React.Component {
+  componentWillMount(){
+    var user_id = sessionStorage.getItem("user_id");
+    var user_role = sessionStorage.getItem("user_role");
+    if(user_id===null || user_role !== 'CREATOR')
+      this.props.history.push('/') 
+  }
+
+
   constructor (props){
         super(props);
+        this.handleChange = this.handleChange.bind(this);
         this.state = {
             items : [],
             suggestions : [],  
             text : '', 
             rtext : ''
         };
+
     }
     componentDidMount(){
     this.assign();
@@ -97,19 +107,38 @@ axios(config)
   }
 
   submit= () =>{
-    return(
-    //console.log(this.title.value),
-    //console.log(this.state.emails),
-    //alert(this.state.group),
+    var data = JSON.stringify(
+  {
+    "title":this.state.title,
+  "email":this.state.email,
+"description":this.state.desc,
+"type":this.state.type,
+"startDateTime":this.state.st_date+'T'+this.state.st_time,
+"endDateTime":this.state.en_date+'T'+this.state.en_time,
+});
+
+var config = {
+  method: 'post',
+  url: 'api/addEvent',
+  headers: { 
+    'Authorization': 'Basic ZGlwYW5zaGk2MDBAZ21haWwuY29tOmRk', 
+    'Content-Type': 'application/json'
+  },
+  data : data
+};
     axios.post("/api/addGroup",
     {
       'groupname':this.state.group,
       'groupusers':this.state.mails
-    }).then((error)=>{
-      alert(error.data)
+    }).then( (response) => {
+   alert("error.data");
+})
+    .catch((error) =>{
+      alert(error.data);
     })
-    );  
-  }
+    
+}
+ 
 
   fetch = () =>{
   //var axios = require('axios');

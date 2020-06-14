@@ -3,13 +3,22 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { Route, withRouter } from 'react-router-dom';
 import axios from 'axios';
-import './material.css'
+import '../material.css'
+
 import NavBar from './NavBar';
 
 class CCalendar extends React.Component {
   state = {
     data : null
 }
+
+componentWillMount(){
+    var user_id = sessionStorage.getItem("user_id");
+    var user_role = sessionStorage.getItem("user_role");
+    if(user_id===null || user_role !== 'CREATOR')
+      this.props.history.push('/') 
+  }
+
 
 componentDidMount(){
     this.assign();
@@ -19,13 +28,12 @@ assign= () =>{
 
   var config = {
   method: 'get',
-  url: 'http://localhost:8080/api/eventsByUserId/1'
+  url: 'api/eventsByUserId/1'
+
   
   };
 axios(config)
 .then( (response) => {
-  console.log(JSON.stringify(response.data));
-  console.log(response.data);
   this.setState({data:response.data});
   console.log(this.state.data);
 })
@@ -39,7 +47,7 @@ axios(config)
      <div >
     
   <div class="wrapper ">
-    <NavBar current='calendar' />
+    <NavBar current='creator-calendar' />
    <div class=" main-panel jumbotron">
     <FullCalendar defaultView="dayGridMonth" plugins={[ dayGridPlugin ]}
       events={this.state.data}
@@ -54,3 +62,4 @@ axios(config)
 }
 }
 export default withRouter(CCalendar);
+

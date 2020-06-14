@@ -15159,17 +15159,33 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
 }
 
-.sidebar .caret {
-  display: inline-block;
-  width: 0;
-  height: 0;
-  margin-left: 2px;
-  vertical-align: middle;
-  border-top: 4px dashed;
-  border-top: 4px solid\9;
-  border-right: 4px solid transparent;
-  border-left: 4px solid transparent;
+.sidenav {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 10;
+  z-index: 2;
+  width: 343px;
+  background: whitesmoke;
+  border-left: 1px solid rgb(143, 140, 140);
+  border-right: 1px solid lightgray;
+  }
+.sidenav button{
+  width:340px;
+  padding: 5px;
+  border:none;
+  margin-top: 5px;
+  
 }
+.sidenav button:hover{
+  background: white;
+}
+.sidenav button:focus{
+  background: lightgray;
+  border: none;
+  outline: none;
+}
+
 
 .sidebar[data-background-color="black"] {
   background-color: #191919;
@@ -15183,7 +15199,14 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   z-index: 4;
   padding-bottom: 30px;
 }
-
+.sidenav .sidebar-wrapper {
+  position: relative;
+  height: calc(100vh);
+  overflow: auto;
+  width: 350px;
+  z-index: 4;
+  padding-bottom: 30px;
+}
 .sidebar .sidebar-wrapper .dropdown .dropdown-backdrop {
   display: none !important;
 }
@@ -15227,6 +15250,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   display: inherit;
 }
 
+
 .sidebar .sidebar-wrapper>.nav [data-toggle="collapse"]~div>ul>li>a i,
 .sidebar .sidebar-wrapper .user .user-info [data-toggle="collapse"]~div>ul>li>a i {
   font-size: 17px;
@@ -15253,8 +15277,18 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   margin-top: 20px;
   display: block;
 }
+.sidenav .nav {
+  margin-top: 20px;
+  display: block;
+}
 
 .sidebar .nav .caret {
+  margin-top: 13px;
+  position: absolute;
+  right: 6px;
+}
+
+.sidenav .nav .caret {
   margin-top: 13px;
   position: absolute;
   right: 6px;
@@ -15269,6 +15303,8 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 .sidebar .nav li:first-child>a {
   margin: 0 15px;
 }
+
+
 
 .sidebar .nav li:hover>a,
 .sidebar .nav li .dropdown-menu a:hover,
@@ -15305,6 +15341,8 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   margin-top: 31px;
 }
 
+
+
 .sidebar .nav p {
   margin: 0;
   line-height: 30px;
@@ -15314,6 +15352,17 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   height: auto;
   white-space: nowrap;
 }
+
+.sidenav .nav p {
+  margin: 0;
+  line-height: 30px;
+  font-size: 16px;
+  position: relative;
+  display: block;
+  height: auto;
+  white-space: nowrap;
+}
+
 
 .sidebar .nav i {
   font-size: 24px;
@@ -15558,6 +15607,12 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   float: right;
   width: calc(100% - 260px);
   transition: 0.33s, cubic-bezier(0.685, 0.0473, 0.346, 1);
+}
+.sidepanel{
+  position: fixed;
+  left :630px;
+  float: right;
+  width: calc(100% - 550px);
 }
 
 .main-panel>.content {
