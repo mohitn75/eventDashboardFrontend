@@ -1,8 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import './material.css'
+import '../material.css'
 import axios from 'axios';
-import Table from './Table';
+import Table from '../Table';
 import NavBar from './NavBar';
 
 class delEvent extends React.Component {
@@ -18,6 +18,12 @@ class delEvent extends React.Component {
     id:"",
     data : null
   }
+  componentWillMount(){
+    var user_id = sessionStorage.getItem("user_id");
+    var user_role = sessionStorage.getItem("user_role");
+    if(user_id===null || user_role !== 'CREATOR')
+      this.props.history.push('/') 
+  }
 componentDidMount(){
     this.assign();
   }
@@ -29,10 +35,10 @@ handleChange(event) {
   }  
 
 assign= () =>{
-
+  var user_email = sessionStorage.getItem("user_email");
   var config = {
   method: 'get',
-  url: '/api/events'
+  url: 'api/findEventByHost/'+user_email
   
   };
 axios(config)
@@ -52,14 +58,13 @@ del = () =>{
     };
   axios(config)
   .then( (response) => {
-    console.log(JSON.stringify(response.data));
-    console.log(response.data);
+    //console.log(JSON.stringify(response.data));
+    //console.log(response.data);
   })
   .catch((error) =>{
     console.log(error.data);
     console.log(this.state.id);
   });
-  alert(this.state.id)
 }  
   
     render(){
@@ -116,4 +121,3 @@ del = () =>{
 
 export default withRouter(delEvent)
 
-/* */

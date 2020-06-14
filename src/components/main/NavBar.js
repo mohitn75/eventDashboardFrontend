@@ -5,15 +5,14 @@ import ReactNotification from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import { store } from 'react-notifications-component';
 import axios from 'axios';
-
 class NavBar extends React.Component {
-    
-    state = {
-      current : this.props.current,
-      data : "",
-      length:""
+
+  state={
+    data : "",
+    length:"",
+    current : this.props.current
   }
-  /*async componentDidMount() {
+  async componentDidMount() {
   try {
             setInterval(async () => {
               await axios.get('api/events')
@@ -32,7 +31,7 @@ class NavBar extends React.Component {
             console.log(e);
           }
   }
-*/
+
   notify = ($head) => {
       store.addNotification(
           {
@@ -54,46 +53,45 @@ class NavBar extends React.Component {
 
 
   }
-     
+   
   render(){
     var user_name = sessionStorage.getItem("user_name");
   return (
-    
+
      <div class="sidebar" data-color="purple" data-background-color="white"  >
-      <div style={{position:'absolute', z_index:1}}><ReactNotification /></div>
+      <ReactNotification />
       <div class="text" style={{marginTop:'40px',marginBottom:'30px',textAlign:'center', textTransform:'uppercase' }}>
          <h3> {user_name}</h3>
       </div>
-      
       <div class="sidebar-wrapper">
-      <hr/>
+      
       <ul class="nav" >
 
       <div>
-      {this.state.current === 'creator-dash' ? 
+      {this.state.current === 'dash' ? 
         <li class="nav-item ">
-            <a class="nav-link active" href="/creator-dash">
+            <a class="nav-link active" href="/dash">
               <p>Dashboard</p>
             </a>
           </li> 
           : 
           <li class="nav-item ">
-            <a class="nav-link" href="/creator-dash">
+            <a class="nav-link" href="/dash">
               <p>Dashboard</p>
             </a>
           </li> 
           }
       </div>
       <div>
-      {this.state.current === 'creator-calendar' ? 
+      {this.state.current === 'calendar' ? 
         <li class="nav-item ">
-            <a class="nav-link active" href="/creator-calendar">
+            <a class="nav-link active" href="/calendar">
               <p>Calendar</p>
             </a>
           </li> 
           : 
           <li class="nav-item ">
-            <a class="nav-link" href="/creator-calendar">
+            <a class="nav-link" href="/calendar">
               <p>Calendar</p>
             </a>
           </li> 
@@ -101,91 +99,15 @@ class NavBar extends React.Component {
       </div>
       
       <div>
-      {this.state.current === 'newevent' ? 
+      {this.state.current === 'alerts' ? 
         <li class="nav-item ">
-            <a class="nav-link active" href="/newevent">
-              <p>Create Event</p>
-            </a>
-          </li> 
-          : 
-          <li class="nav-item ">
-            <a class="nav-link" href="/newevent">
-              <p>Create Event</p>
-            </a>
-          </li> 
-          }
-      </div>
-      <div>
-      {this.state.current === 'newgroup' ? 
-        <li class="nav-item ">
-            <a class="nav-link active" href="/newgroup">
-              <p>Create Group</p>
-            </a>
-          </li> 
-          : 
-          <li class="nav-item ">
-            <a class="nav-link" href="/newgroup">
-              <p>Create Group</p>
-            </a>
-          </li> 
-          }
-      </div>
-      <div>
-      {this.state.current === 'events' ? 
-        <li class="nav-item ">
-            <a class="nav-link active" href="/events">
-              <p>All Events</p>
-            </a>
-          </li> 
-          : 
-          <li class="nav-item ">
-            <a class="nav-link" href="/events">
-              <p>All Events</p>
-            </a>
-          </li> 
-          }
-      </div>
-      <div>
-      {this.state.current === 'updateevent' ? 
-        <li class="nav-item ">
-            <a class="nav-link active" href="/updateevent">
-              <p>Update Events</p>
-            </a>
-          </li> 
-          : 
-          <li class="nav-item ">
-            <a class="nav-link" href="/updateevent">
-              <p>Update Events</p>
-            </a>
-          </li> 
-          }
-      </div>
-      <div>
-      {this.state.current === 'delevent' ? 
-        <li class="nav-item ">
-            <a class="nav-link active" href="/delevent">
-              <p>Delete an Event</p>
-            </a>
-          </li> 
-          : 
-          <li class="nav-item ">
-            <a class="nav-link" href="/delevent">
-              <p>Delete an Event</p>
-            </a>
-          </li> 
-          }
-      </div>
-      
-      <div>
-      {this.state.current === 'creator-alerts' ? 
-        <li class="nav-item ">
-            <a class="nav-link active" href="/creator-alerts">
+            <a class="nav-link active" href="/alerts">
               <p>Alerts</p>
             </a>
           </li> 
           : 
           <li class="nav-item ">
-            <a class="nav-link" href="/creator-alerts">
+            <a class="nav-link" href="/alerts">
               <p>Alerts</p>
             </a>
           </li> 

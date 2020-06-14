@@ -29,16 +29,25 @@ class Login extends React.Component {
              )
              .then((response) => {
                 console.log(response.data);
-                this.props.history.push('/cdash') 
-                /*axios.get("/api/userByEmail"+this.state.email)
+                axios.get("/api/userByEmail/"+this.state.email)
                   .then((response) =>{
-
+                      let id = response.data['id'];
+                      let role=response.data['role']['role'];
+                      let name=response.data['firstName']+' '+response.data['lastName'];
+                      sessionStorage.setItem("user_id", id);
+                      sessionStorage.setItem("user_name", name);
+                      sessionStorage.setItem("user_email", this.state.email);
+                      sessionStorage.setItem("user_role", role);
+                      
+                      if(role === 'USER')
+                      this.props.history.push('/dash') 
+                      else if(role === 'CREATOR')
+                      this.props.history.push('/creator-dash') 
                   },
                   (error)=>{}
                   
                   )
                 
-                */
                 }, (error) => 
              { 
              if(error.response.status===401){
@@ -52,41 +61,6 @@ class Login extends React.Component {
              }
              
              });
-
-///ers=401 wrong cred,,, 403:not accessible,,404
-         //.then(function (response) {
-           // let arr = response.data;
-            //console.log('hel');
-            //console.log(response.data);
-            //if(arr==='success')
-              /*axios.get("http://localhost:8080/api/user../",{
-              params: {
-              email:this.state.email
-              }}
-              )
-                  .then(function (response) {
-                    let role=response.data[0]['role'];
-                    if(role === 'user')
-                    this.props.history.push('/dash') 
-                    else if(role === 'creator')
-                    this.props.history.push('/cdash') 
-
-                  })*/
-           // }
-            //)
-          
-          //.then(response => console.log(response.data));
-    //axios.post("http://localhost:8080/api/addEvent",{'title':'meet '});
-    //console.log(this.state.email);
-    //console.log(this.state.password);
-    /*const url = "localhost:8080/events";
-    const res = fetch(url);
-    const data = res.json();
-    console.log(data);
-    */
-    //this.setState
-
-    //this.props.history.push('/cdash') 
   }
 
   render() {
@@ -99,7 +73,7 @@ class Login extends React.Component {
           <div className="form">
             <div className="form-group">
               <label htmlFor="email">Email</label>
-              <input type = "text"
+              <input type = "email"
                 placeholder="Email"
                 autoCapitalize="none"
                 placeholderTextColor="lightgrey"
@@ -110,7 +84,7 @@ class Login extends React.Component {
             </div>
             <div className="form-group">
               <label htmlFor="password">Password</label>
-              <input type = "text"
+              <input type = "password"
                 placeholder="Password"
                 autoCapitalize="none"
                 placeholderTextColor="lightgrey"

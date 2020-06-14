@@ -1,4 +1,6 @@
 //Custom Fonts
+@import '~@fullcalendar/core/main.css';
+@import '~@fullcalendar/daygrid/main.css';
 @import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
 
 .App {
@@ -27,7 +29,7 @@
 }
 
 .App-link {
-  color: #61dafb;
+  color: #23c83e;
 }
 
 @keyframes App-logo-spin {
@@ -70,7 +72,7 @@
     flex-direction: column;
     justify-content: center;
     height: 90%;
-    background-color: #3498db;
+    background-color: #23c83e;
     width: 100%;
     position: absolute;
     right: -34%;
@@ -110,13 +112,13 @@
   font-size: 21px;
   padding: 5px 20px;
   border: 0;
-  background-color: #3498db;
+  background-color: c;
   color: #fff;
   border-radius: 3px;
   transition: all 250ms ease-in-out;
   cursor: pointer;
   &:hover {
-    background-color: #2386c8;
+    background-color: #23c83e;
   }
   &:focus {
     outline: none;

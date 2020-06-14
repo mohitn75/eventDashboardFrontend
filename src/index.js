@@ -4,17 +4,18 @@ import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Route, BrowserRouter } from 'react-router-dom';
-import Calendar from './components/main/Calendar';
 import Alerts from './components/main/Alerts';
 import Dash from './components/main/Dash';
 import CDash from './components/creator/Dash';
-import CCalendar from './components/creator/Calendar';
 import CAlerts from './components/creator/Alerts';
 import newEvent from './components/creator/newEvent';
 import newGroup from './components/creator/newGroup';
-import test from './components/creator/test';
+import Calendar from './components/main/Calendar';
+import CCalendar from './components/creator/Calendar';
 import delEvent from './components/creator/delEvent';
-
+import logOut from './components/logout';
+import listEvents from './components/creator/listEvents';
+import updateEvent from './components/creator/updateEvent';
 
 
 const stack= (
@@ -26,12 +27,15 @@ const stack= (
          <Route exact path="/dash" component={Dash} />
          <Route path="/calendar" component={Calendar} />
          <Route path="/alerts" component={Alerts} />
-         <Route exact path="/cdash" component={CDash} />
-         <Route path="/ccalendar" component={CCalendar} />
-         <Route path="/calerts" component={CAlerts} />
+         <Route exact path="/creator-dash" component={CDash} />
+         <Route path="/creator-calendar" component={CCalendar} />
+         <Route path="/creator-alerts" component={CAlerts} />
          <Route path="/newevent" component={newEvent} />
          <Route path="/newgroup" component={newGroup} />
          <Route path="/delevent" component={delEvent} />
+         <Route path="/logout" component={logOut} />
+         <Route path="/events" component={listEvents} />
+         <Route path="/updateevent" component={updateEvent} />
       </div>
    </ BrowserRouter >
 );
@@ -39,9 +43,12 @@ const stack= (
 ReactDOM.render(
   stack,
   document.getElementById('root')
+
 );
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
+//
+//
 serviceWorker.unregister();

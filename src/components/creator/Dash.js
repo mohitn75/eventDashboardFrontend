@@ -1,10 +1,18 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import './material.css'
-import Table from './Table'
+import '../material.css'
+import Table from '../Table'
 import NavBar from './NavBar';
 
 class  CDash extends React.Component {
+
+  componentWillMount(){
+    var user_id = sessionStorage.getItem("user_id");
+    var user_role = sessionStorage.getItem("user_role");
+    if(user_id===null || user_role !== 'CREATOR')
+      this.props.history.push('/') 
+  }
+
   data = [
     {
 'Title':'Hii Connect',	
@@ -42,7 +50,7 @@ class  CDash extends React.Component {
      <div >
     
   <div class="wrapper ">
-    <NavBar current='dashboard' />
+    <NavBar current='creator-dash' />
     <div class="main-panel">
       <div class="content">
         <div class="container-fluid">

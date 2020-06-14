@@ -1,16 +1,17 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import '../material.css'
-import axios from 'axios';
+import '../material.css';
 import NavBar from './NavBar';
+import axios from 'axios'
 
-class newEvent extends React.Component {
+class updateEvent extends React.Component {
   componentWillMount(){
     var user_id = sessionStorage.getItem("user_id");
     var user_role = sessionStorage.getItem("user_role");
     if(user_id===null || user_role !== 'CREATOR')
       this.props.history.push('/') 
   }
+  
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -18,8 +19,8 @@ class newEvent extends React.Component {
     }
     state = {
     cur : 'all',
-    title : "",
-    desc :"",
+    title : "new meet",
+    desc :"njjbbbefr",
     st_date :"",
     st_time :"",
     en_date :"",
@@ -36,9 +37,6 @@ class newEvent extends React.Component {
       [event.target.name] : event.target.value
     });
   }
-
-  
-
   fetch = () =>{
     //var axios = require('axios');
     var user_email = sessionStorage.getItem("user_email");
@@ -54,7 +52,7 @@ var data = JSON.stringify(
 
 var config = {
   method: 'post',
-  url: 'api/addEvent',
+  url: 'api/updateEvent',
   headers: { 
     'Authorization': 'Basic ZGlwYW5zaGk2MDBAZ21haWwuY29tOmRk', 
     'Content-Type': 'application/json'
@@ -74,33 +72,69 @@ axios(config)
 
   }
 
-  
+
   render(){
-    //this.submit()
   return (
      <div >
     
   <div class="wrapper ">
-    <NavBar current='newevent' />
-    <div class="main-panel">
-      <div class="content">
+    <NavBar current='updateevent'/>
+   <div class=" main-panel ">
+
+    <div class="sidenav" data-color="black" data-background-color="white"  >
+      
+      
+      <div class="sidebar-wrapper">
+      <ul class="nav" >
+        <li class="nav-item ">
+            <button>
+            <label>New Meeting</label>
+            <p>this is new</p>
+            </button>
+        </li>
+        <li class="nav-item ">
+            <button>
+            <label>New Meeting</label>
+            <p>this is new</p>
+            </button>
+        </li>
+        <li class="nav-item ">
+            <button>
+            <label>New Meeting</label>
+            <p>this is new</p>
+            </button>
+        </li>
+        <li class="nav-item ">
+            <button>
+            <label>New Meeting</label>
+            <p>this is new</p>
+            </button>
+        </li>
+
+      </ul>
+      </div>
+    </div>
+    
+   
+  </div>
+  <div class="sidepanel">
+    <div class="content">
         <div class="container-fluid">
           <div class="row">
             <div class="col-md-10">
               <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 class="card-title">New Event</h4>
-                  <p class="card-category">Provide details</p>
+                  <h4 class="card-title">Event Details</h4>
                 </div>
                 <div class="card-body">
-                  <form disabled='disabled'>
+                  <form >
                     <div class="row">
                       <div class="col-md-9">
                         <div class="form-group">
                           <label class="bmd-label-floating">Event Title</label>
                           <input type="text" class="form-control" 
                           name = "title"
-                          //value = {this.state.password}
+                          value = {this.state.title}
                           onChange={this.handleChange} />
                         </div>
                       </div>
@@ -241,8 +275,7 @@ axios(config)
                     </div>
                     <br />
                     <button type="submit" class="btn btn-primary pull-right" 
-                    onClick = {() => this.fetch() }>Create Event</button>
-                    <div class="clearfix"></div>
+                    onClick = {() => this.fetch() }>Update Event Details</button>
                   </form>
                 </div>
               </div>
@@ -251,11 +284,13 @@ axios(config)
           </div>
         </div>
       </div>
-    </div>
+  </div>
+
+
+
   </div>
 </div>   
 );
 }
 }
-
-export default withRouter(newEvent);
+export default withRouter(updateEvent);

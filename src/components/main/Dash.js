@@ -1,37 +1,21 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import './material.css'
+import '../material.css';
+import NavBar from './NavBar';
 
-function Dash() {
+class Dash extends React.Component {
+  componentWillMount(){
+    var user_id = sessionStorage.getItem("user_id");
+    var user_role = sessionStorage.getItem("user_role");
+    if(user_id===null || user_role !== 'USER')
+      this.props.history.push('/') 
+  }
+  render(){
   return (
      <div >
     
   <div class="wrapper ">
-    <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
- 
-      <div class="logo">
-          USER NAME
-        </div>
-      <div class="sidebar-wrapper">
-        <ul class="nav">
-          <li class="nav-item ">
-            <a class="nav-link" href="/dash">
-              <p>Dashboard</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="/calendar">
-              <p>Calendar</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="/alerts">
-              <p>Alerts</p>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <NavBar current='dash' />
     <div class="main-panel">
       <div class="content">
         <div class="container-fluid">
@@ -39,7 +23,7 @@ function Dash() {
             <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card card-stats">
                 <div class="card-header card-header-warning card-header-icon">
-                  <div class="card-icon">
+                  <div class="card-icon" >
                     <i class="material-icons">I</i>
                   </div>
                   <p class="card-category">Total Events</p>
@@ -86,7 +70,7 @@ function Dash() {
               </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="card card-stats">
+              <div class="card card-stats"   >
                 <div class="card-header card-header-info card-header-icon">
                   <div class="card-icon">
                     <i class="fa fa-twitter">I</i>
@@ -193,5 +177,6 @@ function Dash() {
   </div>
 </div>   
 );
+}
 }
 export default withRouter(Dash);
