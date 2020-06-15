@@ -28,7 +28,7 @@ assign= () =>{
 
   var config = {
   method: 'get',
-  url: 'http://localhost:8080/api/eventsByUserId/2'
+  url: 'api/eventsByUserId/1'
 
   
   };

@@ -38,7 +38,7 @@ assign= () =>{
   var user_email = sessionStorage.getItem("user_email");
   var config = {
   method: 'get',
-  url: 'api/findEventByHost/'+user_email
+  url: 'http://localhost:8080/api/findEventByHost/'+user_email
   
   };
 axios(config)
@@ -51,11 +51,19 @@ axios(config)
 }
   
 del = () =>{
+
+    var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
   var config = {
-    method: 'delete',
-    url: '/api/deleteEvent/'+this.state.id
+  method: 'delete',
+  url: 'http://localhost:8080/api/deleteEvent/'+this.state.id,
+  headers: {   
+    'Authorization': auth ,
+    'Content-Type': 'application/json',
+    'crossorigin':true,
+    'Access-Control-Allow-Origin' : '*',      
+    'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS'},
     
-    };
+};
   axios(config)
   .then( (response) => {
     //console.log(JSON.stringify(response.data));

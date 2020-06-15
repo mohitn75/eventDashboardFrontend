@@ -10,49 +10,89 @@ class NavBar extends React.Component {
     
     state = {
       current : this.props.current,
-      data : "",
-      length:""
+      
   }
-  /*async componentDidMount() {
+  async componentDidMount() {
+    var user_id = sessionStorage.getItem("user_id");
   try {
-            setInterval(async () => {
-              await axios.get('api/events')
+        setInterval(async () => {
+            await axios.get('http://localhost:8080/api/alertsCountNewEvent/'+user_id)
         .then( (response) => {
-        this.setState({data:response.data,
-        length:response.data.length});
-        //alert(this.state.data.length)
-
-        this.notify(this.state.data.length)
-        })
+          if(JSON.stringify(response.data)!==sessionStorage.getItem("lenAl"))
+              {
+              sessionStorage.setItem("lenAl",JSON.stringify(response.data));
+              this.notifyA(sessionStorage.getItem("lenAl"))}
+          })
         .catch((error) =>{
         console.log(error);
         });
-            }, 30000);
-          } catch(e) {
+            }, 3000);
+    } 
+    catch(e){
             console.log(e);
-          }
+    }
+
+    try {
+        setInterval(async () => {
+            await axios.get('http://localhost:8080/api/alertsCountEventIn15Min/'+user_id)
+        .then( (response) => {
+          
+          if(JSON.stringify(response.data)!==sessionStorage.getItem("lenRem"))
+              {
+              sessionStorage.setItem("lenRem", JSON.stringify(response.data));
+              this.notifyR(sessionStorage.getItem("lenRem"))
+              }
+          })
+        .catch((error) =>{
+        console.log(error);
+        });
+            }, 3000);
+    } 
+    catch(e){
+            console.log(e);
+    }
+
+
   }
-*/
-  notify = ($head) => {
+
+  notifyA = ($head) => {
       store.addNotification(
-          {
-          title: $head+ " new events",
-          message: <a href="/dash">hello</a>,
+      {
+         id:1,
+          title: $head+ " NEW EVENTS",
+          message: <a href="/alerts">View All</a>,
           type: "success",
-          insert: "top",
-          container: "top-right",
+          insert: "bottom",
+          container: "bottom-right",
           animationIn: ["animated", "fadeIn"],
           animationOut: ["animated", "fadeOut"],
           dismiss: {
-            duration:3000,
+            duration:0,
             click:false,
             showIcon:true
           }
-          }
+      }
       )
-    
+  }
 
-
+  notifyR = ($head) => {
+      store.addNotification(
+      {
+          id:1,
+          title: $head+ " REM",
+          message: <a href="/alerts">View All</a>,
+          type: "success",
+          insert: "bottom",
+          container: "bottom-right",
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration:0,
+            click:false,
+            showIcon:true
+          }
+      }
+      )
   }
      
   render(){
@@ -60,7 +100,7 @@ class NavBar extends React.Component {
   return (
     
      <div class="sidebar" data-color="purple" data-background-color="white"  >
-      <div style={{position:'absolute', z_index:1}}><ReactNotification /></div>
+      <div style={{position:'absolute', z_index:10000}}><ReactNotification /></div>
       <div class="text" style={{marginTop:'40px',marginBottom:'30px',textAlign:'center', textTransform:'uppercase' }}>
          <h3> {user_name}</h3>
       </div>
@@ -206,8 +246,10 @@ class NavBar extends React.Component {
           </li> 
           }
       </div>
+      
        
         </ul>
+        
       </div>
       </div>
     

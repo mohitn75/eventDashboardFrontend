@@ -15172,21 +15172,40 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   }
 .sidenav button{
   width:340px;
-  padding: 5px;
+  padding: 10px;
   border:none;
-  margin-top: 5px;
-  
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+  text-align: left;
+  color: #000;
+  word-wrap: break-word;
 }
 .sidenav button:hover{
   background: white;
 }
 .sidenav button:focus{
   background: lightgray;
-  border: none;
+  
   outline: none;
+
 }
-
-
+.sidenav button {
+  font-weight: 600;
+}
+.sidenav .nav .nav-item p {
+  margin: 0;
+  line-height: 30px;
+  font-size: 14px;
+  position: relative;
+  display: block;
+  height: auto;
+  white-space: nowrap;
+  color: rgb(59, 55, 55);
+  text-align: left;
+  word-wrap: break-word;
+  overflow: hidden;
+  font-weight: normal;
+}
 .sidebar[data-background-color="black"] {
   background-color: #191919;
 }
@@ -15353,15 +15372,6 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   white-space: nowrap;
 }
 
-.sidenav .nav p {
-  margin: 0;
-  line-height: 30px;
-  font-size: 16px;
-  position: relative;
-  display: block;
-  height: auto;
-  white-space: nowrap;
-}
 
 
 .sidebar .nav i {
@@ -17763,7 +17773,7 @@ html[dir="rtl"] .form-check .form-check-sign .check:before {
 }
 
 .card .card-header {
-  z-index: 3 !important;
+  z-index: 3 ;
 }
 
 .card .card-header .card-title {

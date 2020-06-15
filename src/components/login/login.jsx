@@ -22,14 +22,14 @@ class Login extends React.Component {
   }
    signUp = () => {
 
-     axios.get("/login",          
+     axios.get("http://localhost:8080/login",          
      { headers: { 
        "X-Requested-With" : "XMLHttpRequest",
        authorization: 'Basic ' + window.btoa(this.state.email + ":" + this.state.password) } }
              )
              .then((response) => {
                 console.log(response.data);
-                axios.get("/api/userByEmail/"+this.state.email)
+                axios.get("http://localhost:8080/api/userByEmail/"+this.state.email)
                   .then((response) =>{
                       let id = response.data['id'];
                       let role=response.data['role']['role'];
@@ -38,6 +38,9 @@ class Login extends React.Component {
                       sessionStorage.setItem("user_name", name);
                       sessionStorage.setItem("user_email", this.state.email);
                       sessionStorage.setItem("user_role", role);
+                      sessionStorage.setItem("user_pass", this.state.password);
+                      sessionStorage.setItem("lenAl", "0");
+                      sessionStorage.setItem("lenRem", "0");
                       
                       if(role === 'USER')
                       this.props.history.push('/dash') 

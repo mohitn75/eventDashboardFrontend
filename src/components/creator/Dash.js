@@ -3,8 +3,17 @@ import { withRouter } from 'react-router-dom';
 import '../material.css'
 import Table from '../Table'
 import NavBar from './NavBar';
+import axios from 'axios';
 
 class  CDash extends React.Component {
+
+  state={
+    data:null,
+    total:null,
+    today:null,
+    new:null,
+    pending:null
+  }
 
   componentWillMount(){
     var user_id = sessionStorage.getItem("user_id");
@@ -12,39 +21,64 @@ class  CDash extends React.Component {
     if(user_id===null || user_role !== 'CREATOR')
       this.props.history.push('/') 
   }
+  componentDidMount(){
+    this.assign();
+  }
+  assign= () =>{
+  //var user_email = sessionStorage.getItem("user_email");
+  var config = {
+  method: 'get',
+  url: 'api/getEventDashboard'
+  };
+  axios(config)
+  .then( (response) => {
+    this.setState({
+      data:response.data,
+      total:response.data.length
+      });
+  })
+  .catch((error) =>{
+    console.log(error);
+  });
+  }
 
-  data = [
-    {
-'Title':'Hii Connect',	
-'Place':'Meet room 1',	
-'Time':'13:00 - 13:30',	
-'Date':'8 June 2020' ,
-'Host':'Head'
-},
-{
-'Title':'Hii Connect',	
-'Place':'Meet room 1',	
-'Time':'13:00 - 13:30',	
-'Date':'8 June 2020' ,
-'Host':'Head'
-},
-{
-'Title':'Training',	
-'Place':'Hall',	
-'Time':'13:00 - 13:30',	
-'Date':'8 June 2020' ,
-'Host':'Head'
-},
-{
-'Title':'Training',	
-'Place':'Hall',	
-'Time':'13:00 - 13:30',	
-'Date':'8 June 2020' ,
-'Host':'Head'
-}
- ]
+  newCount= () =>{
+  //var user_email = sessionStorage.getItem("user_email");
+  var config = {
+  method: 'get',
+  url: 'api/getEventDashboard'
+  };
+  axios(config)
+  .then( (response) => {
+    this.setState({
+      data:response.data,
+      total:response.data.length
+      });
+  })
+  .catch((error) =>{
+    console.log(error);
+  });
+  }
 
- total = this.data.length
+
+  assign= () =>{
+  //var user_email = sessionStorage.getItem("user_email");
+  var config = {
+  method: 'get',
+  url: 'api/getEventDashboard'
+  };
+  axios(config)
+  .then( (response) => {
+    this.setState({
+      data:response.data,
+      total:response.data.length
+      });
+  })
+  .catch((error) =>{
+    console.log(error);
+  });
+  }
+
   render(){
   return (
      <div >
@@ -62,7 +96,7 @@ class  CDash extends React.Component {
                     <i class="material-icons">I</i>
                   </div>
                   <p class="card-category">Total Events</p>
-                  <h3 class="card-title" >{this.total}
+                  <h3 class="card-title" >{this.state.total}
                   </h3>
                 </div>
                 <div class="card-footer">
@@ -110,7 +144,7 @@ class  CDash extends React.Component {
                   <div class="card-icon">
                     <i class="fa fa-twitter">I</i>
                   </div>
-                  <p class="card-category">Scheduled Tomorrow</p>
+                  <p class="card-category">Scheduled Today</p>
                   <h3 class="card-title">2</h3>
                 </div>
                 <div class="card-footer">
@@ -177,7 +211,8 @@ class  CDash extends React.Component {
                   <p class="card-category">All events</p>
                 </div>
                 <div class="card-body table-responsive">
-                <Table data={this.data}/>
+                {this.state.data===null?null:
+                <Table data={this.state.data}/>}
                   
                 </div>
               </div>

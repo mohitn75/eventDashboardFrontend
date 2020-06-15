@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import '../material.css'
 import axios from 'axios';
 import NavBar from './NavBar';
-import './autoCompleteText.css';
+//import './autoCompleteText.css';
 
 class newGroup extends React.Component {
   componentWillMount(){
@@ -21,12 +21,16 @@ class newGroup extends React.Component {
             items : [],
             suggestions : [],  
             text : '', 
-            rtext : ''
+            rtext : '',
+            name:"",
+            email:"",
+            groupnames:""
         };
 
     }
     componentDidMount(){
     this.assign();
+    this.getnames();
   }
 
 assign= () =>{
@@ -42,6 +46,24 @@ axios(config)
   console.log(response.data);
   this.setState({items:response.data});
   console.log(this.state.items);
+})
+.catch((error) =>{
+  console.log(error);
+});
+}
+
+getnames= () =>{
+
+  var config = {
+  method: 'get',
+  url: 'http://localhost:8080/api/getGroupNames'
+  };
+axios(config)
+.then( (response) => {
+  //console.log(JSON.stringify(response.data));
+  //alert(response.data);
+  this.setState({groupnames:response.data});
+  //console.log(this.state.groupnames);
 })
 .catch((error) =>{
   console.log(error);
@@ -77,6 +99,10 @@ axios(config)
         }
         console.log("rtext" + this.state.rtext);
         this.setState(() => ({ suggestions , text : lol })); 
+
+        this.setState({email:lol})
+        console.log(lol)
+        
     }
 
 
@@ -84,7 +110,9 @@ axios(config)
       this.setState(() => ({
           text : this.state.rtext + value,
           suggestions : [],
-          rtext : ""
+          rtext : "",
+          name:"",
+          email:""
       }))
   }
 
@@ -106,56 +134,28 @@ axios(config)
     });
   }
 
-  submit= () =>{
-    var data = JSON.stringify(
-  {
-    "title":this.state.title,
-  "email":this.state.email,
-"description":this.state.desc,
-"type":this.state.type,
-"startDateTime":this.state.st_date+'T'+this.state.st_time,
-"endDateTime":this.state.en_date+'T'+this.state.en_time,
-});
-
-var config = {
-  method: 'post',
-  url: 'api/addEvent',
-  headers: { 
-    'Authorization': 'Basic ZGlwYW5zaGk2MDBAZ21haWwuY29tOmRk', 
-    'Content-Type': 'application/json'
-  },
-  data : data
-};
-    axios.post("/api/addGroup",
-    {
-      'groupname':this.state.group,
-      'groupusers':this.state.mails
-    }).then( (response) => {
-   alert("error.data");
-})
-    .catch((error) =>{
-      alert(error.data);
-    })
-    
-}
- 
-
   fetch = () =>{
   //var axios = require('axios');
   var data = JSON.stringify(
   {
-    "groupname":this.state.group,
-  "groupusers":this.state.mails
+    "name":this.state.name,
+    "creatorEmail":sessionStorage.getItem("user_email"),
+    "email":this.state.email
 });
-
+alert(data);
+var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
 var config = {
+
+
   method: 'post',
-  url: 'api/addGroup',
-  headers: { 
-    'Authorization': 'Basic ZGlwYW5zaGk2MDBAZ21haWwuY29tOmRk', 
-    'Content-Type': 'application/json'
-  },
-  data : data
+  url: 'http://localhost:8080/api/addGroup',
+  headers: {   
+    'Authorization': auth ,
+    'Content-Type': 'application/json',
+    'crossorigin':true,
+    'Access-Control-Allow-Origin' : '*',      
+    'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS'},
+    data : data
 };
 
 axios(config)
@@ -193,7 +193,7 @@ axios(config)
                         <div class="form-group">
                           <label class="bmd-label-floating">Group Title</label>
                           <input type="text" class="form-control" 
-                          name="group"
+                          name="name"
                           onChange={this.handleChange} />
                         </div>
                       </div>
@@ -205,7 +205,7 @@ axios(config)
                     <label class="bmd-label-floating">Email (separate each email with a comma, 
                     like: mail@example.com, mail2@example.com)</label>
                     <div className = "autoCompletetext">
-                <input value ={text} onChange = {this.onTextChanged} type = "text " />
+                <input value ={text} onChange = {this.onTextChanged} type = "email" name="email" multiple/>
                 {this.renderSuggestions()}
                 </div>
                     </div>
@@ -225,7 +225,17 @@ axios(config)
                 <div class="card-body">
                   <h4 class="card-title">Existing Groups</h4>
                   <p class="card-description">
-
+                    {this.state.groupnames=== "" ? null :
+                    <ul class="nav" >
+                      {this.state.groupnames.map(listitem => (
+                        <div>
+                          <li className="nav-item">
+                            {listitem}
+                          </li>
+                         </div> 
+                        ))}
+                    </ul>
+                    }
                   </p>
                   
                 </div>
