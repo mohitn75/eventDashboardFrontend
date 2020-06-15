@@ -17,18 +17,18 @@ class newEvent extends React.Component {
     this.fetch = this.fetch.bind(this);
     }
     state = {
-    cur : 'all',
+    
     title : "",
     desc :"",
     st_date :"",
     st_time :"",
     en_date :"",
     en_time :"",
-    target :"all",
+    target :"public",
     type :"",
     current:"newevent",
-    cla:""
-
+    users:"",
+    place:""
     };
   
   handleChange(event) {
@@ -42,33 +42,58 @@ class newEvent extends React.Component {
   fetch = () =>{
     //var axios = require('axios');
     var user_email = sessionStorage.getItem("user_email");
-var data = JSON.stringify(
-  {
-    "title":this.state.title,
+    var start = this.state.st_date + " " + this.state.st_time+ ":00";
+    var end = this.state.en_date + " " + this.state.en_time+ ":00";
+var data = JSON.stringify({
+  "title":this.state.title,
   "email":user_email,
-"description":this.state.desc,
-"type":this.state.type,
-"startDateTime":this.state.st_date+'T'+this.state.st_time,
-"endDateTime":this.state.en_date+'T'+this.state.en_time,
-});
-
+  "description":this.state.desc,
+  "place":this.state.place,
+  "startDateTime":start,//"2020-06-14 15:40:00",
+  "endDateTime":end,//"2020-06-14 15:40:00",
+  "type":this.state.type,
+  "target":this.state.target,
+  "action":this.state.users
+  });
+/*{
+  title:this.state.title,
+  email:user_email,
+  description:this.state.desc,
+  place:this.state.place,
+  startDateTime:"2020-06-14 15:40:00",//this.state.st_date + " " + this.state.st_time,//
+  endDateTime:"2020-06-16 15:40:00",//JSON.stringify(this.state.en_date)+" "+JSON.stringify(this.state.en_time),//
+  type:this.state.type,
+  target:this.state.target,
+  action:this.state.users
+  };
+  var newdata = JSON.stringify(data);*/
+  //alert(data)
+  //alert(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass"))
+ var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
 var config = {
-  method: 'post',
-  url: 'api/addEvent',
-  headers: { 
-    'Authorization': 'Basic ZGlwYW5zaGk2MDBAZ21haWwuY29tOmRk', 
-    'Content-Type': 'application/json'
-  },
-  data : data
-};
 
+
+  method: 'post',
+  url: 'http://localhost:8080/api/addEvent',
+  headers: {   
+    'Authorization': auth ,
+    'Content-Type': 'application/json',
+    'crossorigin':true,
+    'Access-Control-Allow-Origin' : '*',      
+    'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS'},
+    data : data
+};
+//lert(this.state.st_date+" "+this.state.st_time)
 axios(config)
 .then(function (response) {
   console.log(JSON.stringify(response.data));
-  
+  alert("success")
 })
 .catch(function (error) {
-  console.log(error);
+  alert(error)
+  alert(this.state.st_date)
+  alert(this.state.st_time)
+  console.log(error.data);
   console.log("error");
 });
 
@@ -154,9 +179,9 @@ axios(config)
                       <div class="col-md-2">
                         <div class="form-group">          
                         
-                        <label class="bmd-label-floating" for="all" > Public &nbsp;</label>
-                        <input type="radio" id="all" name="target" value="all" 
-                        onClick={()=> this.setState({target : 'all'})} />
+                        <label class="bmd-label-floating" for="public" > Public &nbsp;</label>
+                        <input type="radio" id="public" name="target" value="public" 
+                        onClick={()=> this.setState({target : 'public'})} />
                         </div>
                       </div>
                       <div class="col-md-2">
@@ -170,22 +195,22 @@ axios(config)
                       <div class="col-md-2">
                         <div class="form-group">
                            
-                        <label class="bmd-label-floating" for="mail" > E-mails &nbsp;</label>
-                        <input type="radio" id="mail" name="target" 
-                        onClick={()=> this.setState({target : 'mail'})}/>
+                        <label class="bmd-label-floating" for="emails" > E-mails &nbsp;</label>
+                        <input type="radio" id="emails" name="target" 
+                        onClick={()=> this.setState({target : 'emails'})}/>
                         </div>
                       </div>
                     </div>
 
                     <div>
-                    {this.state.target === 'mail' ? 
+                    {this.state.target === 'emails' ? 
                     <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-11">
                     <div class="form-group">
                     <label class="bmd-label-floating">Email (separate each email with a comma, like: mail@example.com, mail2@example.com)</label>
                     <input type="email" class="form-control" multiple 
-                    name = "action"
+                    name = "users"
                     //value = {this.state.password}
                     onChange={this.handleChange}/>
                     </div>
@@ -202,7 +227,7 @@ axios(config)
                     <div class="form-group">
                     <label class="bmd-label-floating">Group Name</label>
                     <input type="text" class="form-control" 
-                    name = "action"
+                    name = "users"
                     //value = {newEvent.state.tar}
                     onChange={this.handleChange}/>
                     </div>
@@ -214,11 +239,20 @@ axios(config)
                     
                     <br />
                     <div class="row">
-                      <div class="col-md-9">
+                      <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Event Type</label>
                           <input type="text" class="form-control" 
                           name = "type"
+                          //value = {this.state.password}
+                          onChange={this.handleChange} />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Place</label>
+                          <input type="text" class="form-control" 
+                          name = "place"
                           //value = {this.state.password}
                           onChange={this.handleChange} />
                         </div>

@@ -33,15 +33,14 @@ class listEvents extends React.Component {
     });
   }
   assign= () =>{
-  var user_email = sessionStorage.getItem("user_email");
+  //var user_email = sessionStorage.getItem("user_email");
   var config = {
   method: 'get',
-  url:'http://localhost:8080/api/findEventByHost/'+user_email
+  url: 'api/events'
   };
   axios(config)
   .then( (response) => {
     this.setState({data:response.data});
-    
   })
   .catch((error) =>{
     console.log(error);

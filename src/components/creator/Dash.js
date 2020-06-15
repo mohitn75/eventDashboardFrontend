@@ -7,12 +7,21 @@ import axios from 'axios';
 
 class  CDash extends React.Component {
 
+  state={
+    data:null,
+    total:null,
+    today:null,
+    new:null,
+    pending:null
+  }
+
   componentWillMount(){
     var user_id = sessionStorage.getItem("user_id");
     var user_role = sessionStorage.getItem("user_role");
     if(user_id===null || user_role !== 'CREATOR')
       this.props.history.push('/') 
   }
+
     constructor(props) {
       super(props);
       this.state = {
@@ -109,6 +118,7 @@ assign1= () =>{
     }
  //total = this.state.data === null ? 0 : this.data.length; 
  //totalPending = this.state.data === null ? 0 : this.data.length;
+
   render(){
   return (
   <div >  
@@ -125,7 +135,7 @@ assign1= () =>{
                     <i class="material-icons">I</i>
                   </div>
                   <p class="card-category">Total Events</p>
-                  <h3 class="card-title" >{this.total}
+                  <h3 class="card-title" >{this.state.total}
                   </h3>
                 </div>
                 <div class="card-footer">
@@ -173,7 +183,7 @@ assign1= () =>{
                   <div class="card-icon">
                     <i class="fa fa-twitter">I</i>
                   </div>
-                  <p class="card-category">Scheduled Tomorrow</p>
+                  <p class="card-category">Scheduled Today</p>
                   <h3 class="card-title">2</h3>
                 </div>
                 <div class="card-footer">
@@ -226,8 +236,11 @@ assign1= () =>{
                   <p class="card-category">All events</p>
                 </div>
                 <div class="card-body table-responsive">
+
+
                 {this.state.dataUpcomingEvent===null?null:
                <Table data={this.state.dataUpcomingEvent}/>}       
+
                 </div>
               </div>
             </div>
