@@ -15,54 +15,70 @@ class SingleUpdate extends React.Component {
     }
     
     state = {
-    //data : this.props.data,
+    data : this.props.data,
     cur : 'all',
-    title : this.props.data['title'],
+    title : "",
     desc :"",
     st_date :"",
     st_time :"",
     en_date :"",
     en_time :"",
-    target :"all",
+    
     type :"",
     current:"newevent",
-    cla:"",
-    event:null
+    
+    event:null,
     
     }
     handleChange(event) {
+      //alert(event.target.value)
     this.setState({
-      [event.target.name] : event.target.value
+      [event.target.name] : event.target.value 
       //alert(this.data['title'])
     });
+    //alert(this.state.title)
     }
 
 
     fetch = () =>{
+      if(this.state.title==="")
+        this.state.title=this.state.data['title']
+      if(this.state.desc==="")
+        this.state.desc=this.state.data['description']
+      if(this.state.type==="")
+        this.state.type=this.state.data['type']
+      if(this.state.place==="")
+        this.state.place=this.state.data['place']
+      if(this.state.st_date==="")
+        this.state.st_date=this.state.data['startDateTime'].split(" ")[0]
+      if(this.state.st_time==="")
+        this.state.st_time=this.state.data['startDateTime'].split(" ")[1]
+      if(this.state.en_date==="")
+        this.state.en_date=this.state.data['endDateTime'].split(" ")[0]
+      if(this.state.en_time==="")
+        this.state.en_time=this.state.data['endDateTime'].split(" ")[1]
 
-      alert(this.state.title)
-            //var axios = require('axios');
-            var user_email = sessionStorage.getItem("user_email");
+      var start = this.state.st_date + " " + this.state.st_time+ ":00";
+    var end = this.state.en_date + " " + this.state.en_time+ ":00";
+          
             var data = JSON.stringify(
             {
-            "title":this.state.title,
-            "email":user_email,
+            "title": this.state.title,
             "description":this.state.desc,
+            "place":this.state.place,
             "type":this.state.type,
-            "startDateTime":this.state.st_date+' '+this.state.st_time,
-            "endDateTime":this.state.en_date+' '+this.state.en_time,
+            "startDateTime":start,
+            "endDateTime":end,
             });
-
+          alert(JSON.stringify(data))
             var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
         var config = {
         method: 'post',
         url: 'http://localhost:8080/api/updateEvent',
-        headers: {   
-          'Authorization': auth ,
-          'Content-Type': 'application/json',
-          'crossorigin':true,
-          'Access-Control-Allow-Origin' : '*',      
-          'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS'},
+        headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    'Authorization': auth ,
+                    'Content-Type': 'application/json'},
           data : data
       };
 
@@ -80,6 +96,7 @@ class SingleUpdate extends React.Component {
 
     render(){
        this.state.data=this.props.data;
+       
        
         return(
             
@@ -109,7 +126,7 @@ class SingleUpdate extends React.Component {
                       <div class="col-md-3">
                         <div class="form-group">
                           <label class="bmd-label-floating">Start date</label>
-                          <input type="date" class="form-control" 
+                          <input type="text" class="form-control" 
                           name = "st_date"
                           placeHolder = {this.state.data['startDateTime'].split(" ")[0]}
                           onFocus="(this.type='date')"
@@ -119,57 +136,58 @@ class SingleUpdate extends React.Component {
                       <div class="col-md-3">
                         <div class="form-group">
                           <label class="bmd-label-floating">Start time</label>
-                          <input type="time" class="form-control" 
+                          <input type="text" class="form-control" 
                           name = "st_time"
-                          //value = {this.state.password}
+                          placeHolder = {this.state.data['startDateTime'].split(" ")[1]}
+                          onFocus="(this.type='time')"
                           onChange={this.handleChange}/>
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="form-group">
                           <label class="bmd-label-floating">End date</label>
-                          <input type="date" class="form-control" 
+                          <input type="text" class="form-control" 
                           name = "en_date"
-                          //value = {this.state.password}
+                          placeHolder = {this.state.data['endDateTime'].split(" ")[0]}
+                          onFocus="(this.type='date')"
                           onChange={this.handleChange}/>
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="form-group">
                           <label class="bmd-label-floating">End time</label>
-                          <input type="time" class="form-control" 
+                          <input type="text" class="form-control" 
                           name = "en_time"
-                          //value = {this.state.password}
+                          placeHolder = {this.state.data['endDateTime'].split(" ")[1]}
+                          onFocus="(this.type='time')"
                           onChange={this.handleChange}/>
                         </div>
                       </div>
                     </div>
                     <br />
                     <div class="row">
-                      <div class="col-md-9">
+                      <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Event Type</label>
                           <input type="text" class="form-control" 
                           name = "type"
                           //value = {this.state.type}
-                          placeHolder = {this.state.data['startDateTime'].split(" ")[0]}
+                          placeHolder = {this.state.data['type']}
+                          onChange={this.handleChange} />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Place</label>
+                          <input type="text" class="form-control" 
+                          name = "place"
+                          //value = {this.state.type}
+                          placeHolder = {this.state.data['place']}
                           onChange={this.handleChange} />
                         </div>
                       </div>
                     </div>
 
-                    <br />
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group ">
-                          <label class="bmd-label-floating">Target</label>
-                          <input type="text" class="form-control" 
-                          name = "target" disabled
-                          //value = {this.state.password}
-                          onChange={this.handleChange} />
-                        </div>
-                      </div>
-                    </div>
                     
                     <br />
                     <div class="row">
@@ -179,7 +197,7 @@ class SingleUpdate extends React.Component {
                             <label class="bmd-label-floating"> Description</label>
                             <textarea class="form-control" rows="3"
                             name = "desc"
-                          value = {this.state.desc}
+                          placeHolder={this.state.data['description']}
                           onChange={this.handleChange}></textarea>
                           
                         </div>

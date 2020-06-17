@@ -29,10 +29,14 @@ class updateEvent extends React.Component {
   
 
 assign= () =>{
+  var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
   var user_email = sessionStorage.getItem("user_email");
   var config = {
   method: 'get',
-  url:'http://localhost:8080/api/findEventByHost/'+user_email
+  url:'http://localhost:8080/api/findEventByHost/'+user_email,
+  headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    authorization: auth }
   };
   axios(config)
   .then( (response) => {

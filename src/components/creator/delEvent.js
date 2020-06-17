@@ -35,15 +35,20 @@ handleChange(event) {
   }  
 
 assign= () =>{
+  var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
   var user_email = sessionStorage.getItem("user_email");
   var config = {
   method: 'get',
-  url: 'http://localhost:8080/api/findEventByHost/'+user_email
+  url: 'http://localhost:8080/api/findEventByHost/'+user_email,
+  headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    authorization: auth }
   
   };
 axios(config)
 .then( (response) => {
-  this.setState({data:response.data});
+  if(response.data.length!==0)
+    this.setState({data:response.data});
 })
 .catch((error) =>{
   console.log(error);
@@ -51,28 +56,26 @@ axios(config)
 }
   
 del = () =>{
-
+if(window.confirm("Do you want to delete")){
+     
     var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
   var config = {
   method: 'delete',
   url: 'http://localhost:8080/api/deleteEvent/'+this.state.id,
-  headers: {   
-    'Authorization': auth ,
-    'Content-Type': 'application/json',
-    'crossorigin':true,
-    'Access-Control-Allow-Origin' : '*',      
-    'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS'},
+  headers: { 
+    "X-Requested-With" : "XMLHttpRequest",
+     authorization: auth }
     
 };
   axios(config)
   .then( (response) => {
-    //console.log(JSON.stringify(response.data));
-    //console.log(response.data);
+    alert("Event deleted successfully!")
   })
   .catch((error) =>{
-    console.log(error.data);
-    console.log(this.state.id);
+    alert("Failed to delete event")
   });
+  
+}
 }  
   
     render(){

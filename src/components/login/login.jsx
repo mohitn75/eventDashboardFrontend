@@ -28,39 +28,49 @@ class Login extends React.Component {
        authorization: 'Basic ' + window.btoa(this.state.email + ":" + this.state.password) } }
              )
              .then((response) => {
-                console.log(response.data);
-                axios.get("http://localhost:8080/api/userByEmail/"+this.state.email)
+                
+                axios.get("http://localhost:8080/api/userByEmail/"+this.state.email,
+                {headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    authorization: 'Basic ' + window.btoa(this.state.email + ":" + this.state.password) }})
                   .then((response) =>{
+                    //alert(this.state.email);
                       let id = response.data['id'];
                       let role=response.data['role']['role'];
                       let name=response.data['firstName']+' '+response.data['lastName'];
                       sessionStorage.setItem("user_id", id);
                       sessionStorage.setItem("user_name", name);
                       sessionStorage.setItem("user_email", this.state.email);
-                      sessionStorage.setItem("user_role", role);
                       sessionStorage.setItem("user_pass", this.state.password);
-                      sessionStorage.setItem("lenAl", "0");
-                      sessionStorage.setItem("lenRem", "0");
-                      
+                      sessionStorage.setItem("user_role", role); 
+                      sessionStorage.setItem("lenRem", 0);
+                      sessionStorage.setItem("lenAl", 0);         
+                      sessionStorage.setItem("flag", "1");                     
                       if(role === 'USER')
                       this.props.history.push('/dash') 
-                      else if(role === 'CREATOR')
+                      else if(role === 'CREATOR'|| role==='ADMIN')
                       this.props.history.push('/creator-dash') 
+
+                      
                   },
-                  (error)=>{}
+                  (error)=>{
+                    alert("Login failed");
+                  }
                   
                   )
                 
                 }, (error) => 
              { 
-             if(error.response.status===401){
-               alert("wrong cred"); 
+             if(error.response===undefined)
+              alert("Login failed")
+             else if(error.response.status===401){
+               alert("Wrong Credentials"); 
              }
              else if(error.response.status===403){
-               alert("unaccessible"); 
+               alert("Unaccessible"); 
              }
              else if(error.response.status===404){
-               alert("page not found"); 
+               alert("Page Not Found"); 
              }
              
              });
@@ -99,7 +109,7 @@ class Login extends React.Component {
           </div>
         </div>
         <div className="footer">
-          <input type="button" class="btn btn-primary" onClick={this.signUp} value = "Log In"/>
+          <input type="button" class="btn" onClick={this.signUp} value = "Log In"/>
         </div>
       </div>
     );
@@ -107,4 +117,3 @@ class Login extends React.Component {
 }
 
 export default withRouter(Login);
-

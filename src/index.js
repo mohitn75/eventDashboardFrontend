@@ -14,7 +14,9 @@ import Calendar from './components/main/Calendar';
 import CCalendar from './components/creator/Calendar';
 import delEvent from './components/creator/delEvent';
 import logOut from './components/logout';
-import listEvents from './components/creator/listEvents';
+import ClistEvents from './components/creator/listEvents';
+import viewEvents from './components/creator/viewEvents';
+import listEvents from './components/main/listEvents';
 import updateEvent from './components/creator/updateEvent';
 
 
@@ -36,7 +38,9 @@ const stack= (
          <Route path="/delevent" component={delEvent} />
          <Route path="/logout" component={logOut} />
          <Route path="/events" component={listEvents} />
+         <Route path="/creator-events" component={ClistEvents} />
          <Route path="/updateevent" component={updateEvent} />
+         <Route path="/view-events" component={viewEvents} />
 
       </div>
    </ BrowserRouter >
