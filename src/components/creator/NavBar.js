@@ -13,10 +13,25 @@ class NavBar extends React.Component {
       
   }
   async componentDidMount() {
+    var user_name = sessionStorage.getItem("user_name");
+      var flag = sessionStorage.getItem("flag")
+    if(flag==='1')
+    {
+        this.notifyLogin(user_name)
+        sessionStorage.setItem("flag", "0");
+    }
+    var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
     var user_id = sessionStorage.getItem("user_id");
+    var config1 = {
+            method: 'get',
+            url:'http://localhost:8080/api/alertsCountNewEvent/'+user_id,
+            headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    authorization: auth }
+            };
   try {
         setInterval(async () => {
-            await axios.get('http://localhost:8080/api/alertsCountNewEvent/'+user_id)
+            await axios(config1)
         .then( (response) => {
           if(JSON.stringify(response.data)!==sessionStorage.getItem("lenAl"))
               {
@@ -31,16 +46,28 @@ class NavBar extends React.Component {
     catch(e){
             console.log(e);
     }
+    
+    var config2 = {
+      
+            method: 'get',
+            url:'http://localhost:8080/api/alertsCountEventIn15Min/'+user_id,
+            headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    authorization: auth }
+            };
 
     try {
         setInterval(async () => {
-            await axios.get('http://localhost:8080/api/alertsCountEventIn15Min/'+user_id)
+
+          
+            await axios(config2)
         .then( (response) => {
           
           if(JSON.stringify(response.data)!==sessionStorage.getItem("lenRem"))
               {
               sessionStorage.setItem("lenRem", JSON.stringify(response.data));
-              this.notifyR(sessionStorage.getItem("lenRem"))
+              if(JSON.stringify(response.data)!=="0")  
+                this.notifyR(sessionStorage.getItem("lenRem"))
               }
           })
         .catch((error) =>{
@@ -60,7 +87,7 @@ class NavBar extends React.Component {
       {
          id:1,
           title: $head+ " NEW EVENTS",
-          message: <a href="/alerts">View All</a>,
+          message: <a href="/creator-alerts">View All</a>,
           type: "success",
           insert: "bottom",
           container: "bottom-right",
@@ -80,7 +107,7 @@ class NavBar extends React.Component {
       {
           id:1,
           title: $head+ " REM",
-          message: <a href="/alerts">View All</a>,
+          message: <a href="/creator-alerts">View All</a>,
           type: "success",
           insert: "bottom",
           container: "bottom-right",
@@ -94,15 +121,37 @@ class NavBar extends React.Component {
       }
       )
   }
+  notifyLogin = ($name) => {
+      store.addNotification(
+      {
+          title:"Hello, "+ $name + "!",
+          message:"Welcome !",
+          type: "info",
+          insert: "bottom",
+          container: "bottom-right",
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration:3000,
+            click:true,
+            showIcon:true
+          }
+      }
+      )
+  }
      
   render(){
     var user_name = sessionStorage.getItem("user_name");
+    var user_role = sessionStorage.getItem("user_role");
+    var user_email = sessionStorage.getItem("user_email");
   return (
     
      <div class="sidebar" data-color="purple" data-background-color="white"  >
-      <div style={{position:'absolute', z_index:10000}}><ReactNotification /></div>
+      <div ><ReactNotification /></div>
       <div class="text" style={{marginTop:'40px',marginBottom:'30px',textAlign:'center', textTransform:'uppercase' }}>
          <h3> {user_name}</h3>
+         <h6>{user_email}</h6>
+         <p style={{color:'black'}}>{user_role}</p>
       </div>
       
       <div class="sidebar-wrapper">
@@ -171,16 +220,16 @@ class NavBar extends React.Component {
           }
       </div>
       <div>
-      {this.state.current === 'events' ? 
+      {this.state.current === 'creator-events' ? 
         <li class="nav-item ">
-            <a class="nav-link active" href="/events">
-              <p>All Events</p>
+            <a class="nav-link active" href="/creator-events">
+              <p>Created Events</p>
             </a>
           </li> 
           : 
           <li class="nav-item ">
-            <a class="nav-link" href="/events">
-              <p>All Events</p>
+            <a class="nav-link" href="/creator-events">
+              <p>Created Events</p>
             </a>
           </li> 
           }
@@ -215,7 +264,21 @@ class NavBar extends React.Component {
           </li> 
           }
       </div>
-      
+      <div>
+      {this.state.current === 'view-events' ? 
+        <li class="nav-item ">
+            <a class="nav-link active" href="/creator-events">
+              <p>Invited Events</p>
+            </a>
+          </li> 
+          : 
+          <li class="nav-item ">
+            <a class="nav-link" href="/view-events">
+              <p>Invited Events</p>
+            </a>
+          </li> 
+          }
+      </div>
       <div>
       {this.state.current === 'creator-alerts' ? 
         <li class="nav-item ">

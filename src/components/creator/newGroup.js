@@ -3,6 +3,9 @@ import { withRouter } from 'react-router-dom';
 import '../material.css'
 import axios from 'axios';
 import NavBar from './NavBar';
+import ReactNotification from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
+import { store } from 'react-notifications-component';
 //import './autoCompleteText.css';
 
 class newGroup extends React.Component {
@@ -34,41 +37,44 @@ class newGroup extends React.Component {
   }
 
 assign= () =>{
-
+var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
   var config = {
   method: 'get',
-  url: 'http://localhost:8080/api/getEmails'
+  url: 'http://localhost:8080/api/getEmails',
+  headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    'Authorization': auth 
+                    }
   
   };
 axios(config)
 .then( (response) => {
-  console.log(JSON.stringify(response.data));
-  console.log(response.data);
   this.setState({items:response.data});
-  console.log(this.state.items);
 })
 .catch((error) =>{
-  console.log(error);
+  alert("error")
 });
 }
+
 
 getnames= () =>{
+  var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
+  axios.get('http://localhost:8080/api/getGroupNames',{
+    headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    authorization: auth,
+                     }})
+  .then( (response) => {
+    this.setState({groupnames:response.data});
+    //alert(this.state.groupnames)
+  })
+  .catch((error) =>{
+    //console.log(error);
+    alert("error")
+  });
+  }
+ 
 
-  var config = {
-  method: 'get',
-  url: 'http://localhost:8080/api/getGroupNames'
-  };
-axios(config)
-.then( (response) => {
-  //console.log(JSON.stringify(response.data));
-  //alert(response.data);
-  this.setState({groupnames:response.data});
-  //console.log(this.state.groupnames);
-})
-.catch((error) =>{
-  console.log(error);
-});
-}
   onTextChanged = (e) => {
         var value = e.target.value;
         var i;
@@ -77,7 +83,7 @@ axios(config)
         var flag = 0;
         this.setState({ text : this.state.text , suggestions : this.state.suggestions , rtext : ""});
         for(i=value.length-1;i>=0;i--){
-          if(value.charAt(i)==','){
+          if(value.charAt(i)===','){
             j=i;
             flag = 1;
             break;
@@ -111,8 +117,7 @@ axios(config)
           text : this.state.rtext + value,
           suggestions : [],
           rtext : "",
-          name:"",
-          email:""
+          
       }))
   }
 
@@ -122,8 +127,12 @@ axios(config)
           return null;
       }
       return(
-              <ul>
-                  {suggestions.map((item) => <li onClick = {()=> this.suggestionSelected(item)}>{item}</li>)}
+              <ul class="list-group">
+                  {suggestions.map((item) => <li class="list-item" style={{listStyle:'none',
+                   width: '50%',
+                  border : '1px solid gray'}}
+                  onClick = {()=> this.suggestionSelected(item)}>{item}
+                  </li>)}
               </ul>
       );
   }
@@ -149,23 +158,41 @@ var config = {
 
   method: 'post',
   url: 'http://localhost:8080/api/addGroup',
-  headers: {   
-    'Authorization': auth ,
-    'Content-Type': 'application/json',
-    'crossorigin':true,
-    'Access-Control-Allow-Origin' : '*',      
-    'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS'},
+  headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    authorization: auth ,
+                    'Content-Type': 'application/json'},
     data : data
 };
 
 axios(config)
 .then(function (response) {
-  console.log(JSON.stringify(response.data));
+  this.notify()
 })
 .catch(function (error) {
   console.log(error);
 });
 
+  }
+
+
+  notifyLogin = ($name) => {
+      store.addNotification(
+      {
+          title:"Hello, "+ $name + "!",
+          message:"Welcome !",
+          type: "info",
+          insert: "bottom",
+          container: "bottom-right",
+          animationIn: ["animated", "fadeIn"],
+          animationOut: ["animated", "fadeOut"],
+          dismiss: {
+            duration:3000,
+            click:true,
+            showIcon:true
+          }
+      }
+      )
   }
   render(){
     //this.fetch()
@@ -205,7 +232,7 @@ axios(config)
                     <label class="bmd-label-floating">Email (separate each email with a comma, 
                     like: mail@example.com, mail2@example.com)</label>
                     <div className = "autoCompletetext">
-                <input value ={text} onChange = {this.onTextChanged} type = "email" name="email" multiple/>
+                <input class="form-control" value ={text} style={{width:'100%'}} onChange = {this.onTextChanged} type = "email" name="email" multiple/>
                 {this.renderSuggestions()}
                 </div>
                     </div>
@@ -224,17 +251,19 @@ axios(config)
                 
                 <div class="card-body">
                   <h4 class="card-title">Existing Groups</h4>
+                  <br/>
+                  <hr/>
                   <p class="card-description">
                     {this.state.groupnames=== "" ? null :
-                    <ul class="nav" >
+                    //<ul class="nav" >
+                    <div>
                       {this.state.groupnames.map(listitem => (
-                        <div>
-                          <li className="nav-item">
-                            {listitem}
-                          </li>
-                         </div> 
+                        <h4 style={{color:'black' }}> 
+                          {listitem}
+                         </h4> 
                         ))}
-                    </ul>
+                      </div>
+                    //</ul>
                     }
                   </p>
                   

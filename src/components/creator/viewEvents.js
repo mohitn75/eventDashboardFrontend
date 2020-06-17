@@ -5,7 +5,7 @@ import NavBar from './NavBar';
 import axios from 'axios'
 import SingleEvent from './SingleEvent'
 
-class ClistEvents extends React.Component {
+class viewEvents extends React.Component {
   componentWillMount(){
     var user_id = sessionStorage.getItem("user_id");
     var user_role = sessionStorage.getItem("user_role");
@@ -34,10 +34,11 @@ class ClistEvents extends React.Component {
   assign= () =>{
     console.log(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass"))
     var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
-  var user_email = sessionStorage.getItem("user_email");
+  //var user_email = sessionStorage.getItem("user_email");
+  var user_id = sessionStorage.getItem("user_id");
   var config = {
   method: 'get',
-  url:'http://localhost:8080/api/findEventByHost/'+user_email,
+  url:'http://localhost:8080/api/eventsForUser/'+user_id,
   headers: { 
                   "X-Requested-With" : "XMLHttpRequest",
                     'Authorization': auth }
@@ -59,7 +60,7 @@ class ClistEvents extends React.Component {
      <div >
     
   <div class="wrapper ">
-    <NavBar current='creator-events'/>
+    <NavBar current='view-events'/>
    <div class=" main-panel ">
 
     <div class="sidenav" data-color="black" data-background-color="white"  >
@@ -99,4 +100,4 @@ class ClistEvents extends React.Component {
 );
 }
 }
-export default withRouter(ClistEvents);
+export default withRouter(viewEvents);

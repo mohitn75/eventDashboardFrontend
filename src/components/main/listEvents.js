@@ -9,8 +9,8 @@ class listEvents extends React.Component {
   componentWillMount(){
     var user_id = sessionStorage.getItem("user_id");
     var user_role = sessionStorage.getItem("user_role");
-    if(user_id===null || user_role !== 'CREATOR')
-      this.props.history.push('/events') 
+    if(user_id===null || user_role !== 'USER')
+      this.props.history.push('/') 
   }
   componentDidMount(){
     this.assign();
@@ -22,7 +22,6 @@ class listEvents extends React.Component {
     }
     state = {
     event:null,
-    current:"newevent",
     data :null,
 
     };
@@ -33,14 +32,21 @@ class listEvents extends React.Component {
     });
   }
   assign= () =>{
+    console.log(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass"))
+    var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
   //var user_email = sessionStorage.getItem("user_email");
+  var user_id = sessionStorage.getItem("user_id");
   var config = {
   method: 'get',
-  url: 'api/events'
+  url:'http://localhost:8080/api/eventsForUser/'+user_id,
+  headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    'Authorization': auth }
   };
   axios(config)
   .then( (response) => {
     this.setState({data:response.data});
+    
   })
   .catch((error) =>{
     console.log(error);

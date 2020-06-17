@@ -26,11 +26,14 @@ componentDidMount(){
   }
 
 assign= () =>{
-
+  var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
+var user_id = sessionStorage.getItem("user_id");
   var config = {
   method: 'get',
-  url: 'api/eventsByUserId/1'
-
+  url: 'http://localhost:8080/api/eventsByUserId/'+user_id,
+headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    'Authorization': auth }
   
   };
 axios(config)
