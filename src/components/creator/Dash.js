@@ -26,6 +26,7 @@ class  CDash extends React.Component {
       super(props);
       this.state = {
         dataUpcomingEvent : null,
+
         data : null,
         e_id : null,
         u_id : null,
@@ -59,6 +60,7 @@ class  CDash extends React.Component {
     });
     }
   accept = (eventID) =>{
+
     var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
     var user_id = sessionStorage.getItem("user_id");
     console.log(user_id);
@@ -82,7 +84,7 @@ class  CDash extends React.Component {
   }
 
   reject = (eventID) =>{
-    var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
+      var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
       var user_id = sessionStorage.getItem("user_id");
       console.log(user_id);
       var config = {
@@ -135,6 +137,7 @@ assign1= () =>{
   render(){
   return (
    <div >  
+
   <div class="wrapper ">
     <NavBar current='creator-dash' />
     <div class="main-panel">
@@ -182,6 +185,7 @@ assign1= () =>{
                   </div>
                   <p class="card-category">Pending Action</p>
                   <h3 class="card-title">{this.state.data===null?0:this.state.data.length}</h3>
+
                 </div>
                 <div class="card-footer">
                   <div class="stats">
@@ -224,6 +228,7 @@ assign1= () =>{
                         <tbody>
                           <tr>
                           {this.state.data===null?null:this.state.data.map(pendingEvents => (
+
                             <div>
                           <div class="row">
                            <p class="col-lg-4"> {pendingEvents['title']} </p>
@@ -239,6 +244,7 @@ assign1= () =>{
                           </div>
                         ))}
                         
+
                           </tr>                          
                         </tbody>
                       </table>
@@ -272,30 +278,3 @@ assign1= () =>{
 }
 }
 export default withRouter(CDash);
-/*
-<table class="table table-hover">
-                    <thead class="text-warning">
-                      <th>Title</th>
-                      <th>Place</th>
-                      <th>Time</th>
-                      <th>Date</th>
-                      <th>Host</th>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>HR Connect</td>
-                        <td>Meet room 1</td>
-                        <td>13:00 - 13:30</td>
-                        <td>8 June 2020</td>
-                        <td>Head</td>
-                        </tr>
-                        <tr>
-                        <td>Training</td>
-                        <td>Hall 1</td>
-                        <td>17:00 - 18:00</td>
-                        <td>8 June 2020</td>
-                        <td>abc</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  */
