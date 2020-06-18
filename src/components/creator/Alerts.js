@@ -15,6 +15,8 @@ class CAlerts extends React.Component {
     if(user_id===null || user_role !== 'CREATOR')
       this.props.history.push('/') 
     store.removeNotification(1)
+    sessionStorage.setItem("lenAl", JSON.stringify(0))
+    
   }
 
 
@@ -23,54 +25,48 @@ class CAlerts extends React.Component {
     remData:null 
   }
 
-   async componentDidMount() {
-    var user_id = sessionStorage.getItem("user_id");
-  try {
-        setInterval(async () => {
-            await axios.get('http://localhost:8080/api/alertsNewEvent/'+user_id)
-        .then( (response) => {
-          if(JSON.stringify(response.data.length)!==sessionStorage.getItem("lenAl"))
-              {
-              //sessionStorage.setItem("lenAl",JSON.stringify(response.data))
-              this.setState({alertData:response.data});
-
-              }
-          })
-        .catch((error) =>{
-        console.log(error);
-        });
-            }, 3000);
-    } 
-    catch(e){
-            console.log(e);
-    }
-
-    try {
-        setInterval(async () => {
-            await axios.get('http://localhost:8080/api/alertsEventIn15Min/'+user_id)
-        .then( (response) => {
-          
-          if(JSON.stringify(response.data.length)!==sessionStorage.getItem("lenRem"))
-              {
-              //sessionStorage.setItem("lenRem", JSON.stringify(response.data))
-              //alert(response.data.length)
-              this.setState({remData:response.data});
-              }
-          })
-        .catch((error) =>{
-        console.log(error);
-        });
-            }, 3000);
-    } 
-    catch(e){
-            console.log(e);
-    }
-
-
+   componentDidMount() {
+     this.getAl()
+     this.getRem()
+  }
+  getAl(){
+ var user_id = sessionStorage.getItem("user_id");
+  var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
+  var config = {
+  method: 'get',
+  url:'http://localhost:8080/api/alertsNewEvent/'+user_id,
+  headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    'Authorization': auth }
+  };
+  axios(config)
+  .then( (response) => {
+    this.setState({alertData:response.data});
+    
+  })
+  .catch((error) =>{
+    alert("error");
+  });
   }
 
- 
-  
+  getRem(){
+ var user_id = sessionStorage.getItem("user_id");
+  var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
+  var config = {
+  method: 'get',
+  url:'http://localhost:8080/api/alertsEventIn15Min/'+user_id,
+  headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    'Authorization': auth }
+  };
+  axios(config)
+  .then( (response) => {
+    this.setState({remData:response.data});
+  })
+  .catch((error) =>{
+    alert("error");
+  });
+  }
 
   render(){
   return (
@@ -93,10 +89,14 @@ class CAlerts extends React.Component {
               <ul class="list-group " >
                 {this.state.alertData.map(listitem => (
                     <li className="list-group-item" style={{borderBottom: '1px solid lightgrey'}}>
-                    
-                      {listitem['title']}
-                      <p>{listitem['description']}</p>
-                      
+                    <div class="row">
+                      <p class="col"> Title : {listitem['title']}   </p>
+                      <p class="col"> Host : {listitem['email']}</p>
+                    </div>
+                    <div class="row">
+                      <p class="col">Date : {listitem['startDateTime'].split(" ")[0]}</p>
+                      <p class="col">Time : {listitem['startDateTime'].split(" ")[1]}</p>
+                    </div>  
                     </li>
                   ))}
               </ul>
@@ -111,18 +111,22 @@ class CAlerts extends React.Component {
                 </div>
                 <div class="card-body">
                 {this.state.remData===null ? null :
-                <Table data={this.state.remData} />
-                /*<ul class="list-group" >
+              <ul class="list-group " >
                 {this.state.remData.map(listitem => (
                     <li className="list-group-item" style={{borderBottom: '1px solid lightgrey'}}>
-                    
-                      {listitem['title']}
-                      <p>{listitem['description']}</p>
-                      
+                    <div class="row">
+                      <p class="col"> Title : {listitem['title']}   </p>
+                      <p class="col"> Host : {listitem['email']}</p>
+                    </div>
+                    <div class="row">
+                      <p class="col">Date : {listitem['startDateTime'].split(" ")[0]}</p>
+                      <p class="col">Time : {listitem['startDateTime'].split(" ")[1]}</p>
+                    </div>  
                     </li>
                   ))}
-                </ul>*/
-                }
+              </ul>
+              }
+              
                 </div>
 
               </div>
@@ -151,3 +155,53 @@ export default withRouter(CAlerts);
           ))}
       </ul>
       }*/
+  /* var user_id = sessionStorage.getItem("user_id");
+    var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
+  try {
+        setInterval(async () => {
+            await axios.get('http://localhost:8080/api/alertsNewEvent/'+user_id,
+            {headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    authorization: auth }})
+        .then( (response) => {
+          if(JSON.stringify(response.data.length)!==sessionStorage.getItem("lenAl"))
+              {
+              //sessionStorage.setItem("lenAl",JSON.stringify(response.data))
+              this.setState({alertData:response.data});
+
+              }
+          })
+        .catch((error) =>{
+        console.log(error);
+        });
+            }, 3000);
+    } 
+    catch(e){
+            console.log(e);
+    }
+
+    try {
+        setInterval(async () => {
+            await axios.get('http://localhost:8080/api/alertsEventIn15Min/'+user_id,
+            {headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    authorization: auth }})
+        .then( (response) => {
+          
+          if(JSON.stringify(response.data.length)!==sessionStorage.getItem("lenRem"))
+              {
+              //sessionStorage.setItem("lenRem", JSON.stringify(response.data))
+              //alert(response.data.length)
+              this.setState({remData:response.data});
+              }
+          })
+        .catch((error) =>{
+        console.log(error);
+        });
+            }, 3000);
+    } 
+    catch(e){
+            console.log(e);
+    }
+
+*/

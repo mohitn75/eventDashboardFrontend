@@ -5,7 +5,7 @@ import axios from 'axios';
 import NavBar from './NavBar';
 
 class newEvent extends React.Component {
-  componentWillMount(){
+componentWillMount(){
     var user_id = sessionStorage.getItem("user_id");
     var user_role = sessionStorage.getItem("user_role");
     if(user_id===null || user_role !== 'CREATOR')
@@ -28,10 +28,18 @@ class newEvent extends React.Component {
     type :"",
     current:"newevent",
     users:"",
-    place:""
+    place:"",
+      items : [],
+      suggestions : [],  
+      text : '', 
+      rtext : '',
+      items1:[],
+      suggestions1:[],
+      text1:'',
+      rtext1:''
     };
-  
-  handleChange(event) {
+    
+    handleChange(event) {
     this.setState({
       [event.target.name] : event.target.value
     });
@@ -75,33 +83,196 @@ var config = {
 
   method: 'post',
   url: 'http://localhost:8080/api/addEvent',
-  headers: {   
+  headers: { 
+    "X-Requested-With" : "XMLHttpRequest",
     'Authorization': auth ,
-    'Content-Type': 'application/json',
-    'crossorigin':true,
-    'Access-Control-Allow-Origin' : '*',      
-    'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS'},
+    'Content-Type': 'application/json'},
     data : data
 };
 //lert(this.state.st_date+" "+this.state.st_time)
+//alert(data)
 axios(config)
 .then(function (response) {
-  console.log(JSON.stringify(response.data));
-  alert("success")
+  //console.log(JSON.stringify(response.data));
+  alert("Event added !")
 })
 .catch(function (error) {
   alert(error)
-  alert(this.state.st_date)
-  alert(this.state.st_time)
-  console.log(error.data);
-  console.log("error");
+  //alert(this.state.st_date)
+  //alert(this.state.st_time)
+  //console.log(error.data);
+  //console.log("error");
 });
 
   }
 
   
+   componentDidMount(){
+    this.assign();
+    this.assign1();
+  }
+
+assign= () =>{
+ var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
+  var config = {
+  method: 'get',
+  url: 'http://localhost:8080/api/getEmails',
+  headers: { 
+    "X-Requested-With" : "XMLHttpRequest",
+    'Authorization': auth },
+  
+  };
+axios(config)
+.then( (response) => {
+  
+  this.setState({items:response.data});
+})
+.catch((error) =>{
+  console.log(error);
+});
+} 
+
+
+assign1= () =>{
+ var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
+  var config = {
+  method: 'get',
+  url: 'http://localhost:8080/api/getGroupNames',
+  headers: { 
+    "X-Requested-With" : "XMLHttpRequest",
+    'Authorization': auth },
+  
+  };
+axios(config)
+.then( (response) => {
+  
+  this.setState({items1:response.data});
+})
+.catch((error) =>{
+  console.log(error);
+});
+} 
+  onTextChanged = (e) => {
+        var value = e.target.value;
+        var i;
+        var j;
+        var lol = value;
+        var flag = 0;
+        this.setState({ text : this.state.text , suggestions : this.state.suggestions , rtext : ""});
+        for(i=value.length-1;i>=0;i--){
+          if(value.charAt(i)===','){
+            j=i;
+            flag = 1;
+            break;
+          }
+        }
+        if(flag === 1){
+          this.setState({ text : this.state.text , suggestions : this.state.suggestions , rtext : value.substring(0,j+1)});
+          value = value.substring(j+1,value.length);
+        }
+        else{
+          lol = value;
+        }
+        
+        let suggestions = [];
+        if(value.length > 0){
+            const regex = new RegExp(`${value}`,'i');
+            suggestions = this.state.items.sort().filter(v => regex.test(v));
+        }
+        console.log("rtext" + this.state.rtext);
+        this.setState(() => ({ suggestions , text : lol })); 
+        this.setState({action:lol})
+    }
+
+
+  suggestionSelected(value){
+      this.setState(() => ({
+          text : this.state.rtext + value,
+          suggestions : [],
+          rtext : ""
+      }))
+  }
+
+  renderSuggestions (){
+      const {suggestions} =   this.state;
+      if(suggestions.length === 0){
+          return null;
+      }
+      return(
+              <ul>
+                  {suggestions.map((item) => <li style={{listStyle:'none',
+                   width: '50%',
+                  border : '1px solid gray'}}
+                  onClick = {()=> this.suggestionSelected(item)}>{item}</li>)}
+              </ul>
+      );
+  }
+  
+
+  onTextChanged1 = (e) => {
+        var value = e.target.value;
+        var i;
+        var j;
+        var lol1 = value;
+        var flag = 0;
+        this.setState({ text1 : this.state.text1 , suggestions1 : this.state.suggestions1 , rtext1 : ""});
+        for(i=value.length-1;i>=0;i--){
+          if(value.charAt(i)===','){
+            j=i;
+            flag = 1;
+            break;
+          }
+        }
+        if(flag === 1){
+          this.setState({ text1 : this.state.text1 , suggestions1 : this.state.suggestions1 , rtext1 : value.substring(0,j+1)});
+          value = value.substring(j+1,value.length);
+        }
+        else{
+          lol1 = value;
+        }
+        console.log("value " + value);
+        console.log("lol" + lol1);
+        let suggestions1 = [];
+        if(value.length > 0){
+            const regex = new RegExp(`${value}`,'i');
+            suggestions1 = this.state.items1.sort().filter(v => regex.test(v));
+        }
+        console.log("rtext" + this.state.rtext1);
+        this.setState(() => ({ suggestions1 , text1 : lol1 })); 
+        this.setState({action:lol1})
+    }
+
+
+  suggestionSelected1(value){
+      this.setState(() => ({
+          text1 : this.state.rtext1 + value,
+          suggestions1 : [],
+          rtext1 : ""
+      }))
+  }
+
+  renderSuggestions1 (){
+      const {suggestions1} =   this.state;
+      if(suggestions1.length === 0){
+          return null;
+      }
+      return(
+              <ul>
+                  {suggestions1.map((item) => <li style={{listStyle:'none',
+                   width: '50%',
+                  border : '1px solid gray'}}
+                  onClick = {()=> this.suggestionSelected1(item)}>{item}</li>)}
+              </ul>
+      );
+  }
+  
+
+
+  
   render(){
     //this.submit()
+    const {text} = this.state;
+    const {text1} = this.state;
   return (
      <div >
     
@@ -195,24 +366,26 @@ axios(config)
                       <div class="col-md-2">
                         <div class="form-group">
                            
-                        <label class="bmd-label-floating" for="emails" > E-mails &nbsp;</label>
-                        <input type="radio" id="emails" name="target" 
-                        onClick={()=> this.setState({target : 'emails'})}/>
+                        <label class="bmd-label-floating" for="mail" > E-mails &nbsp;</label>
+                        <input type="radio" id="mail" name="target" 
+                        onClick={()=> this.setState({target : 'mail'})}/>
                         </div>
                       </div>
                     </div>
 
                     <div>
-                    {this.state.target === 'emails' ? 
+                    {this.state.target === 'mail' ? 
                     <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-11">
                     <div class="form-group">
                     <label class="bmd-label-floating">Email (separate each email with a comma, like: mail@example.com, mail2@example.com)</label>
                     <input type="email" class="form-control" multiple 
-                    name = "users"
+                    name = "action" value={text}
                     //value = {this.state.password}
-                    onChange={this.handleChange}/>
+                    
+                    onChange={this.onTextChanged}/>
+                    {this.renderSuggestions()}
                     </div>
                     </div>
                     </div>
@@ -227,9 +400,10 @@ axios(config)
                     <div class="form-group">
                     <label class="bmd-label-floating">Group Name</label>
                     <input type="text" class="form-control" 
-                    name = "users"
+                    name = "action" value={text1}
                     //value = {newEvent.state.tar}
-                    onChange={this.handleChange}/>
+                    onChange={this.onTextChanged1}/>
+                    {this.renderSuggestions1()}
                     </div>
                     </div>
                     </div>
@@ -239,20 +413,11 @@ axios(config)
                     
                     <br />
                     <div class="row">
-                      <div class="col-md-6">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label class="bmd-label-floating">Event Type</label>
                           <input type="text" class="form-control" 
                           name = "type"
-                          //value = {this.state.password}
-                          onChange={this.handleChange} />
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Place</label>
-                          <input type="text" class="form-control" 
-                          name = "place"
                           //value = {this.state.password}
                           onChange={this.handleChange} />
                         </div>

@@ -25,7 +25,8 @@ class  CDash extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        dataUpcomingEvent : [{"title": "virtual meeting 2"}],
+        dataUpcomingEvent : null,
+
         data : null,
         e_id : null,
         u_id : null,
@@ -37,16 +38,20 @@ class  CDash extends React.Component {
         this.assign1();
     }
     assign= () =>{
+    var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
     var user_id = sessionStorage.getItem("user_id");
     var config = {
     method: 'get',
-    url: 'http://localhost:8080/api/getPendingEvents/' + user_id  
+    url: 'http://localhost:8080/api/getPendingEvents/' + user_id ,
+    headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    authorization: auth } 
     };
     axios(config)
     .then( (response) => {
       console.log(JSON.stringify(response.data));
       console.log(response.data );
-      if(response.data.length!=0)
+      if(response.data.length!==0)
       this.setState({data:response.data});
       console.log(this.state.data );
     })
@@ -55,15 +60,18 @@ class  CDash extends React.Component {
     });
     }
   accept = (eventID) =>{
+
+    var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
     var user_id = sessionStorage.getItem("user_id");
     console.log(user_id);
 
     var config = {
     method: 'post',
-    url: 'api/accept/' + user_id  +'/' + eventID ,    
+    url: 'http://localhost:8080/api/accept/' + user_id  +'/' + eventID ,    
     headers: { 
-      'Content-Type': 'application/json'
-    },
+      'Content-Type': 'application/json',
+      "X-Requested-With" : "XMLHttpRequest",
+       'Authorization': auth }
   };
   axios(config)
   .then(function (response) {      
@@ -76,14 +84,17 @@ class  CDash extends React.Component {
   }
 
   reject = (eventID) =>{
+      var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
       var user_id = sessionStorage.getItem("user_id");
       console.log(user_id);
       var config = {
       method: 'post',
-      url: 'api/reject/' + user_id  +'/' + eventID ,    
+      url: 'http://localhost:8080/api/reject/' + user_id  +'/' + eventID ,    
       headers: { 
-        'Content-Type': 'application/json'
-      },
+        'Content-Type': 'application/json',
+        "X-Requested-With" : "XMLHttpRequest",
+        'Authorization': auth 
+      }
     };
     axios(config)
     .then(function (response) {      
@@ -97,16 +108,21 @@ class  CDash extends React.Component {
 
 
 assign1= () =>{
+  var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
     var user_id = sessionStorage.getItem("user_id");
     var config = {
     method: 'get',
-    url: 'http://localhost:8080/api/getEventDashboard/' + user_id  
+    url: 'http://localhost:8080/api/getEventDashboard/' + user_id ,
+    headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    'Authorization': auth }
+  
     };
     axios(config)
     .then( (response) => {
       console.log(JSON.stringify(response.data));
       console.log(response.data );
-      if(response.data.length!=0)
+      if(response.data.length!==0)
       this.setState({dataUpcomingEvent:response.data});
       console.log(this.state.dataUpcomingEvent );
     })
@@ -115,13 +131,13 @@ assign1= () =>{
     });
         //window.location.reload(false);
 
-    }
- //total = this.state.data === null ? 0 : this.data.length; 
- //totalPending = this.state.data === null ? 0 : this.data.length;
+ }
+ 
 
   render(){
   return (
-  <div >  
+   <div >  
+
   <div class="wrapper ">
     <NavBar current='creator-dash' />
     <div class="main-panel">
@@ -135,7 +151,7 @@ assign1= () =>{
                     <i class="material-icons">I</i>
                   </div>
                   <p class="card-category">Total Events</p>
-                  <h3 class="card-title" >{this.state.total}
+                  <h3 class="card-title" >{this.state.dataUpcomingEvent===null?0:this.state.dataUpcomingEvent.length}
                   </h3>
                 </div>
                 <div class="card-footer">
@@ -168,7 +184,8 @@ assign1= () =>{
                     <i class="material-icons">I</i>
                   </div>
                   <p class="card-category">Pending Action</p>
-                  <h3 class="card-title">{this.totalPending}</h3>
+                  <h3 class="card-title">{this.state.data===null?0:this.state.data.length}</h3>
+
                 </div>
                 <div class="card-footer">
                   <div class="stats">
@@ -211,16 +228,23 @@ assign1= () =>{
                         <tbody>
                           <tr>
                           {this.state.data===null?null:this.state.data.map(pendingEvents => (
-                          <li className="nav-item">
-                            {pendingEvents['title']}
-                          <button type="button" class="btn btn-success"  onClick={()=> this.accept(pendingEvents['id'])}>
+
+                            <div>
+                          <div class="row">
+                           <p class="col-lg-4"> {pendingEvents['title']} </p>
+                          <button type="button" class="btn btn-success col-lg-3"  onClick={()=> this.accept(pendingEvents['id'])}>
                             Accept
                             </button>
-                            <button type="button" class="btn btn-danger" onClick={()=> this.reject(pendingEvents['id'])}>
+                            <button type="button" class="btn btn-danger col-lg-3" onClick={()=> this.reject(pendingEvents['id'])}>
                             Reject
                             </button>
-                          </li>
+                           
+                         </div>
+                          <hr /> 
+                          </div>
                         ))}
+                        
+
                           </tr>                          
                         </tbody>
                       </table>
@@ -249,7 +273,7 @@ assign1= () =>{
       </div>
     </div>
   </div>
-</div>   
+</div>  
 );
 }
 }
