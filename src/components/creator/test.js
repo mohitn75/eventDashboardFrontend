@@ -1,7 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import '../material.css'
-import axios from 'axios';
 import Table from './Table';
 import NavBar from './NavBar';
 
@@ -37,5 +35,5 @@ data = [
     }
 }
 
-export default withRouter(test)
+export default test;
 

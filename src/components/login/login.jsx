@@ -83,6 +83,7 @@ class Login extends React.Component {
           <div className="image">
             <img src={loginImg} alt="logo"/>
           </div>
+          
           <div className="form">
             <div className="form-group">
               <label htmlFor="email">Email</label>

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import '../material.css'
@@ -29,7 +30,13 @@ class  Dash extends React.Component {
         data : null,
         e_id : null,
         u_id : null,
-        response : ""
+        response : "",
+        first:"nav-link active",
+  second:"nav-link",
+  third:"nav-link",
+  tabfirst:"tab-pane active",
+  tabsecond:"tab-pane ",
+  tabthird:"tab-pane "
       };
     }
     componentDidMount(){
@@ -207,6 +214,100 @@ assign1= () =>{
               </div>
             </div>
           </div>
+          <br />
+          <br />
+
+          <div class="row">
+            <div class="col-lg-12 col-md-12">
+              <div class="card">
+                <div class="card-header card-header-tabs card-header-primary">
+                  <div class="nav-tabs-navigation">
+                    <div class="nav-tabs-wrapper">
+                      <ul class="nav nav-tabs" data-tabs="tabs">
+                        <li class="nav-item">
+                          <a class={this.state.first}  data-toggle="tab" 
+                          onClick={()=>this.setState({
+                            first:"nav-link active",second:"nav-link",third:"nav-link",
+                            tabfirst:"tab-pane active",tabsecond:"tab-pane ",tabthird:"tab-pane "
+                            })}>
+                            <h5 class="card-title">Pending Response</h5>
+                            <div class="ripple-container"></div>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class={this.state.second} data-toggle="tab" 
+                          onClick={()=>this.setState({
+                            first:"nav-link",second:"nav-link active",third:"nav-link",
+                            tabfirst:"tab-pane ",tabsecond:"tab-pane active",tabthird:"tab-pane "
+                            })}>
+                            <h5 class="card-title">Upcoming Events</h5>
+                            <div class="ripple-container"></div>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class={this.state.third}  data-toggle="tab" 
+                          onClick={()=>this.setState({
+                            first:"nav-link",second:"nav-link",third:"nav-link active",
+                            tabfirst:"tab-pane",tabsecond:"tab-pane ",tabthird:"tab-pane active"})}>
+                            <h5 class="card-title">Member Groups</h5>
+                            <div class="ripple-container"></div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="tab-content "  >
+                  <div class={this.state.tabfirst} id="profile">
+
+                      
+                          {this.state.data===null?null:this.state.data.map(pendingEvents => (
+
+                            <div>
+                          <div class="row">
+                           <p class="col-lg-6" >Title : {pendingEvents['title']} </p>
+                          <button type="button" class="btn btn-success col-lg-2"  onClick={()=> this.accept(pendingEvents['id'])}>
+                            Accept
+                            </button>
+                            <button type="button" class="btn btn-danger col-lg-2" onClick={()=> this.reject(pendingEvents['id'])}>
+                            Reject
+                            </button>
+                           
+                         </div>
+                          <hr /> 
+                          </div>
+                        ))}
+                         
+                    </div>
+
+                    <div class={this.state.tabsecond} id="messages">
+                      {this.state.dataUpcomingEvent===null?null:
+                    <Table data={this.state.dataUpcomingEvent}/>}       
+                    </div>
+                    <div class={this.state.tabthird} id="settings">
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>  
+);
+}
+}
+export default withRouter(Dash);
+
+/*
+
           <div class="row">
             <div class="col-lg-6 col-md-12">
               <div class="card">
@@ -263,12 +364,6 @@ assign1= () =>{
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>  
-);
-}
-}
-export default withRouter(Dash);
+
+*/
+
