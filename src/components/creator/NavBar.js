@@ -146,28 +146,28 @@ class NavBar extends React.Component {
     var user_email = sessionStorage.getItem("user_email");
   return (
     
-     <div class="sidebar" data-color="purple" data-background-color="white"  >
+     <div className="sidebar" data-color="purple" data-background-color="white"  >
       <div ><ReactNotification /></div>
-      <div class="text" style={{marginTop:'40px',marginBottom:'30px',textAlign:'center', textTransform:'uppercase' }}>
+      <div className="text" style={{marginTop:'40px',marginBottom:'30px',textAlign:'center', textTransform:'uppercase' }}>
          <h3> {user_name}</h3>
          <h6>{user_email}</h6>
          <p style={{color:'black'}}>{user_role}</p>
       </div>
       
-      <div class="sidebar-wrapper">
+      <div className="sidebar-wrapper">
       <hr/>
-      <ul class="nav" >
+      <ul className="nav" >
 
       <div>
       {this.state.current === 'creator-dash' ? 
-        <li class="nav-item ">
-            <a class="nav-link active" href="/creator-dash">
+        <li className="nav-item ">
+            <a className="nav-link active" href="/creator-dash">
               <p>Dashboard</p>
             </a>
           </li> 
           : 
-          <li class="nav-item ">
-            <a class="nav-link" href="/creator-dash">
+          <li className="nav-item ">
+            <a className="nav-link" href="/creator-dash">
               <p>Dashboard</p>
             </a>
           </li> 
@@ -175,14 +175,14 @@ class NavBar extends React.Component {
       </div>
       <div>
       {this.state.current === 'creator-calendar' ? 
-        <li class="nav-item ">
-            <a class="nav-link active" href="/creator-calendar">
+        <li className="nav-item ">
+            <a className="nav-link active" href="/creator-calendar">
               <p>Calendar</p>
             </a>
           </li> 
           : 
-          <li class="nav-item ">
-            <a class="nav-link" href="/creator-calendar">
+          <li className="nav-item ">
+            <a className="nav-link" href="/creator-calendar">
               <p>Calendar</p>
             </a>
           </li> 
@@ -191,14 +191,14 @@ class NavBar extends React.Component {
       
       <div>
       {this.state.current === 'newevent' ? 
-        <li class="nav-item ">
-            <a class="nav-link active" href="/newevent">
+        <li className="nav-item ">
+            <a className="nav-link active" href="/newevent">
               <p>Create Event</p>
             </a>
           </li> 
           : 
-          <li class="nav-item ">
-            <a class="nav-link" href="/newevent">
+          <li className="nav-item ">
+            <a className="nav-link" href="/newevent">
               <p>Create Event</p>
             </a>
           </li> 
@@ -206,14 +206,14 @@ class NavBar extends React.Component {
       </div>
       <div>
       {this.state.current === 'newgroup' ? 
-        <li class="nav-item ">
-            <a class="nav-link active" href="/newgroup">
+        <li className="nav-item ">
+            <a className="nav-link active" href="/newgroup">
               <p>Create Group</p>
             </a>
           </li> 
           : 
-          <li class="nav-item ">
-            <a class="nav-link" href="/newgroup">
+          <li className="nav-item ">
+            <a className="nav-link" href="/newgroup">
               <p>Create Group</p>
             </a>
           </li> 
@@ -221,14 +221,14 @@ class NavBar extends React.Component {
       </div>
       <div>
       {this.state.current === 'creator-events' ? 
-        <li class="nav-item ">
-            <a class="nav-link active" href="/creator-events">
+        <li className="nav-item ">
+            <a className="nav-link active" href="/creator-events">
               <p>Created Events</p>
             </a>
           </li> 
           : 
-          <li class="nav-item ">
-            <a class="nav-link" href="/creator-events">
+          <li className="nav-item ">
+            <a className="nav-link" href="/creator-events">
               <p>Created Events</p>
             </a>
           </li> 
@@ -236,14 +236,14 @@ class NavBar extends React.Component {
       </div>
       <div>
       {this.state.current === 'updateevent' ? 
-        <li class="nav-item ">
-            <a class="nav-link active" href="/updateevent">
+        <li className="nav-item ">
+            <a className="nav-link active" href="/updateevent">
               <p>Update Events</p>
             </a>
           </li> 
           : 
-          <li class="nav-item ">
-            <a class="nav-link" href="/updateevent">
+          <li className="nav-item ">
+            <a className="nav-link" href="/updateevent">
               <p>Update Events</p>
             </a>
           </li> 
@@ -251,14 +251,14 @@ class NavBar extends React.Component {
       </div>
       <div>
       {this.state.current === 'delevent' ? 
-        <li class="nav-item ">
-            <a class="nav-link active" href="/delevent">
+        <li className="nav-item ">
+            <a className="nav-link active" href="/delevent">
               <p>Delete an Event</p>
             </a>
           </li> 
           : 
-          <li class="nav-item ">
-            <a class="nav-link" href="/delevent">
+          <li className="nav-item ">
+            <a className="nav-link" href="/delevent">
               <p>Delete an Event</p>
             </a>
           </li> 
@@ -266,14 +266,14 @@ class NavBar extends React.Component {
       </div>
       <div>
       {this.state.current === 'view-events' ? 
-        <li class="nav-item ">
-            <a class="nav-link active" href="/creator-events">
+        <li className="nav-item ">
+            <a className="nav-link active" href="/creator-events">
               <p>Invited Events</p>
             </a>
           </li> 
           : 
-          <li class="nav-item ">
-            <a class="nav-link" href="/view-events">
+          <li className="nav-item ">
+            <a className="nav-link" href="/view-events">
               <p>Invited Events</p>
             </a>
           </li> 
@@ -281,14 +281,14 @@ class NavBar extends React.Component {
       </div>
       <div>
       {this.state.current === 'creator-alerts' ? 
-        <li class="nav-item ">
-            <a class="nav-link active" href="/creator-alerts">
+        <li className="nav-item ">
+            <a className="nav-link active" href="/creator-alerts">
               <p>Alerts</p>
             </a>
           </li> 
           : 
-          <li class="nav-item ">
-            <a class="nav-link" href="/creator-alerts">
+          <li className="nav-item ">
+            <a className="nav-link" href="/creator-alerts">
               <p>Alerts</p>
             </a>
           </li> 
@@ -296,14 +296,14 @@ class NavBar extends React.Component {
       </div>
       <div>
       {this.state.current === 'logout' ? 
-        <li class="nav-item ">
-            <a class="nav-link active" href="/logout">
+        <li className="nav-item ">
+            <a className="nav-link active" href="/logout">
               <p>Logout</p>
             </a>
           </li> 
           : 
-          <li class="nav-item ">
-            <a class="nav-link" href="/logout">
+          <li className="nav-item ">
+            <a className="nav-link" href="/logout">
               <p>Logout</p>
             </a>
           </li> 

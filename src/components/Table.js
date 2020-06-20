@@ -19,16 +19,16 @@ class Table extends React.Component {
  getHeader = function(){
  var keys = this.getKeys();
  return keys.map((key, index)=>{
- return <th key={key}>{key.toUpperCase()}</th>
- })
+ return <th key={key}>{key.toUpperCase()}</th>})
  }
  
  getRowsData = function(){
  var items = this.props.data;
  var keys = this.getKeys();
- return items.map((row, index)=>{
+ return (items.map((row, index)=>{
  return <tr key={index}><RenderRow key={index} data={row} keys={keys}/></tr>
  })
+ )
  }
 
  
@@ -36,9 +36,8 @@ class Table extends React.Component {
  render() {
  return (
  <div>
-
-                  <table class="table table-hover">
-                    <thead class="text-warning">
+                  <table className="table table-hover">
+                    <thead className="text-primary">
                       <tr>{this.getHeader()}</tr>
                     </thead>
                     <tbody>

@@ -4329,6 +4329,8 @@ tbody.collapse.show {
 
 .tab-content>.tab-pane {
   display: none;
+  overflow: scroll;
+  max-height:45vh;
 }
 
 .tab-content>.active {

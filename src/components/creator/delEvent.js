@@ -18,6 +18,19 @@ class delEvent extends React.Component {
     id:"",
     data : null
   }
+
+  getKeys = function(){
+ return Object.keys(this.state.data[0]);
+ }
+ 
+ getHeader = function(){
+ var keys = this.getKeys();
+ return keys.map((key, index)=>{
+ return <th key={key}>{key.toUpperCase()}</th>})
+ }
+
+
+
   componentWillMount(){
     var user_id = sessionStorage.getItem("user_id");
     var user_role = sessionStorage.getItem("user_role");
@@ -54,14 +67,16 @@ axios(config)
   console.log(error);
 });
 }
+
+
   
-del = () =>{
-if(window.confirm("Do you want to delete")){
+del = (id,title) =>{
+if(window.confirm("Do you want to delete event \nID :"+id+"\nTitle :"+title)){
      
     var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
   var config = {
   method: 'delete',
-  url: 'http://localhost:8080/api/deleteEvent/'+this.state.id,
+  url: 'http://localhost:8080/api/deleteEvent/'+id,
   headers: { 
     "X-Requested-With" : "XMLHttpRequest",
      authorization: auth }
@@ -69,7 +84,9 @@ if(window.confirm("Do you want to delete")){
 };
   axios(config)
   .then( (response) => {
+    window.location.reload(false);
     alert("Event deleted successfully!")
+
   })
   .catch((error) =>{
     alert("Failed to delete event")
@@ -94,15 +111,62 @@ if(window.confirm("Do you want to delete")){
           <div class="card">
                 <div class="card-header card-header-warning">
                   <h4 class="card-title">Select Event</h4>
-                  <p class="card-category">All events</p>
+                  <p class="card-category">Click on the event to delete</p>
                 </div>
                 <div class="card-body table-responsive">
                 {this.state.data===null?null:
-               <Table data={this.state.data}/>}
+               <div>
+                  <table className="table table-hover">
+                    <thead className="text-warning">
+                      <tr>
+                           <td > {"ID"} </td>
+                           <td > {"TITLE"} </td>
+                           <td > {"DESCRIPTION"} </td>
+                           <td > {"PLACE"} </td>
+                           <td > {"START"} </td>
+                           <td > {"END"}} </td>
+                           <td > {"TYPE"} </td>
+                           </tr> 
+                    </thead>
+                    <tbody>
+                       
+                          {this.state.data===null?null:
+                          this.state.data.map(row => (
+                          <tr onClick={()=>this.del(row['id'],row['title'])}>
+                           <td > {row['id']} </td>
+                           <td > {row['title']} </td>
+                           <td > {row['description']} </td>
+                           <td > {row['place']} </td>
+                           <td > {row['startDateTime']} </td>
+                           <td > {row['endDateTime']} </td>
+                           <td > {row['type']} </td>
+                           </tr> 
+                          
+                        ))}
+                        
+                                  
+                    </tbody>
+                  </table>
+                  <button class="btn btn-warning pull-right \" 
+                    onClick={()=>this.functionAlert()}>Delete</button>
+                </div>
+               }
                 </div>
           </div>
           </div>
-          <div class="row justify-content-center ">
+          
+        </div>
+      </div>
+    </div>
+</div>
+        )
+    }
+}
+
+export default withRouter(delEvent)
+
+/*
+<div class="row justify-content-center ">
           <div class="card col-md-4 ">
           <div class="card-body table-responsive">
           <form >
@@ -122,13 +186,4 @@ if(window.confirm("Do you want to delete")){
                   </div>
         </div>
           </div>
-        </div>
-      </div>
-    </div>
-</div>
-        )
-    }
-}
-
-export default withRouter(delEvent)
-
+*/
