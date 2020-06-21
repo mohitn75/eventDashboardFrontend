@@ -6,20 +6,14 @@ import Table from '../Table'
 import NavBar from './NavBar';
 import axios from 'axios';
 
-class  Dash extends React.Component {
+class  CDash extends React.Component {
 
-  state={
-    data:null,
-    total:null,
-    today:null,
-    new:null,
-    pending:null
-  }
+ 
 
   componentWillMount(){
     var user_id = sessionStorage.getItem("user_id");
     var user_role = sessionStorage.getItem("user_role");
-    if(user_id===null || user_role !== 'USER')
+    if(user_id===null || user_role !== 'CREATOR')
       this.props.history.push('/') 
   }
 
@@ -27,6 +21,7 @@ class  Dash extends React.Component {
       super(props);
       this.state = {
         dataUpcomingEvent : null,
+        dataGroups : null,
         data : null,
         e_id : null,
         u_id : null,
@@ -42,6 +37,7 @@ class  Dash extends React.Component {
     componentDidMount(){
         this.assign();
         this.assign1();
+        this.assign2();
     }
     assign= () =>{
     var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
@@ -66,6 +62,7 @@ class  Dash extends React.Component {
     });
     }
   accept = (eventID) =>{
+
     var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
     var user_id = sessionStorage.getItem("user_id");
     console.log(user_id);
@@ -89,7 +86,7 @@ class  Dash extends React.Component {
   }
 
   reject = (eventID) =>{
-    var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
+      var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
       var user_id = sessionStorage.getItem("user_id");
       console.log(user_id);
       var config = {
@@ -138,12 +135,38 @@ assign1= () =>{
 
  }
  
+assign2= () =>{
+  var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
+    var user_id = sessionStorage.getItem("user_id");
+    var config = {
+    method: 'get',
+    url: 'http://localhost:8080/api/getGroupByUser/' + user_id ,
+    headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    'Authorization': auth }
+  
+    };
+    axios(config)
+    .then( (response) => {
+      console.log(JSON.stringify(response.data));
+      console.log(response.data );
+      if(response.data.length!==0)
+      this.setState({dataGroups:response.data});
+      console.log(this.state.dataGroups );
+    })
+    .catch((error) =>{
+      console.log(error);
+    });
+        //window.location.reload(false);
+
+ }
 
   render(){
   return (
    <div >  
+
   <div class="wrapper ">
-    <NavBar current='dash' />
+    <NavBar current='creator-dash' />
     <div class="main-panel">
       <div class="content">
         <div class="container-fluid">
@@ -189,6 +212,7 @@ assign1= () =>{
                   </div>
                   <p class="card-category">Pending Action</p>
                   <h3 class="card-title">{this.state.data===null?0:this.state.data.length}</h3>
+
                 </div>
                 <div class="card-footer">
                   <div class="stats">
@@ -216,7 +240,6 @@ assign1= () =>{
           </div>
           <br />
           <br />
-
           <div class="row">
             <div class="col-lg-12 col-md-12">
               <div class="card">
@@ -258,73 +281,14 @@ assign1= () =>{
                   </div>
                 </div>
                 <div class="card-body">
-                  <div class="tab-content "  >
+                  <div class="tab-content">
                   <div class={this.state.tabfirst} id="profile">
 
-                      
-                          {this.state.data===null?null:this.state.data.map(pendingEvents => (
-
-                            <div>
-                          <div class="row">
-                           <p class="col-lg-6" >Title : {pendingEvents['title']} </p>
-                          <button type="button" class="btn btn-success col-lg-2"  onClick={()=> this.accept(pendingEvents['id'])}>
-                            Accept
-                            </button>
-                            <button type="button" class="btn btn-danger col-lg-2" onClick={()=> this.reject(pendingEvents['id'])}>
-                            Reject
-                            </button>
-                           
-                         </div>
-                          <hr /> 
-                          </div>
-                        ))}
-                         
-                    </div>
-
-                    <div class={this.state.tabsecond} id="messages">
-                      {this.state.dataUpcomingEvent===null?null:
-                    <Table data={this.state.dataUpcomingEvent}/>}       
-                    </div>
-                    <div class={this.state.tabthird} id="settings">
-                      
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-          </div>
-
-
-        </div>
-      </div>
-    </div>
-  </div>
-</div>  
-);
-}
-}
-export default withRouter(Dash);
-
-/*
-
-          <div class="row">
-            <div class="col-lg-6 col-md-12">
-              <div class="card">
-                <div class="card-header card-header-tabs card-header-primary">
-                  <div class="nav-tabs-navigation">
-                    <div class="nav-tabs-wrapper">
-                    <h4 class="card-title">Pending Response</h4>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-body ">
-                  <div class="tab-content">
-                    <div class="tab-pane active" id="profile">
                       <table class="table">
                         <tbody>
                           <tr>
                           {this.state.data===null?null:this.state.data.map(pendingEvents => (
+
                             <div>
                           <div class="row">
                            <p class="col-lg-4"> {pendingEvents['title']} </p>
@@ -340,7 +304,30 @@ export default withRouter(Dash);
                           </div>
                         ))}
                         
-                          </tr>               
+                          </tr>                          
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div class={this.state.tabsecond} id="messages">
+                      {this.state.dataUpcomingEvent===null?null:
+                    <Table data={this.state.dataUpcomingEvent}/>}       
+                    </div>
+                    <div class={this.state.tabthird} id="settings">
+                      <table class="table">
+                        <tbody>
+                          <tr>
+                          {this.state.dataGroups===null?null:this.state.dataGroups.map(groups => (
+
+                            <div>
+                          <div class="row">
+                           <p class="col-lg-4"> {groups['groupName']} </p>                          
+                         </div>
+                          <hr /> 
+                          </div>
+                        ))}
+                        
+                          </tr>                          
                         </tbody>
                       </table>
                     </div>
@@ -348,22 +335,16 @@ export default withRouter(Dash);
                 </div>
               </div>
             </div>
-            <div class="col-lg-6 col-md-12">
-              <div class="card">
-                <div class="card-header card-header-warning">
-                  <h4 class="card-title">Upcoming Events</h4>
-                  <p class="card-category">All events</p>
-                </div>
-                <div class="card-body table-responsive">
-
-
-                {this.state.dataUpcomingEvent===null?null:
-               <Table data={this.state.dataUpcomingEvent}/>}       
-
-                </div>
-              </div>
-            </div>
+            
           </div>
+          
 
-*/
-
+        </div>
+      </div>
+    </div>
+  </div>
+</div>  
+);
+}
+}
+export default withRouter(CDash);
