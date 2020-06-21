@@ -6,14 +6,14 @@ import Table from '../Table'
 import NavBar from './NavBar';
 import axios from 'axios';
 
-class  CDash extends React.Component {
+class  Dash extends React.Component {
 
  
 
   componentWillMount(){
     var user_id = sessionStorage.getItem("user_id");
     var user_role = sessionStorage.getItem("user_role");
-    if(user_id===null || user_role !== 'CREATOR')
+    if(user_id===null || user_role !== 'USER')
       this.props.history.push('/') 
   }
 
@@ -347,4 +347,4 @@ assign2= () =>{
 );
 }
 }
-export default withRouter(CDash);
+export default withRouter(Dash);
