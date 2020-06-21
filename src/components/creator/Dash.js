@@ -21,7 +21,7 @@ class  CDash extends React.Component {
       super(props);
       this.state = {
         dataUpcomingEvent : null,
-
+        dataGroups : null,
         data : null,
         e_id : null,
         u_id : null,
@@ -37,6 +37,7 @@ class  CDash extends React.Component {
     componentDidMount(){
         this.assign();
         this.assign1();
+        this.assign2();
     }
     assign= () =>{
     var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
@@ -134,6 +135,31 @@ assign1= () =>{
 
  }
  
+assign2= () =>{
+  var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
+    var user_id = sessionStorage.getItem("user_id");
+    var config = {
+    method: 'get',
+    url: 'http://localhost:8080/api/getGroupByUser/' + user_id ,
+    headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    'Authorization': auth }
+  
+    };
+    axios(config)
+    .then( (response) => {
+      console.log(JSON.stringify(response.data));
+      console.log(response.data );
+      if(response.data.length!==0)
+      this.setState({dataGroups:response.data});
+      console.log(this.state.dataGroups );
+    })
+    .catch((error) =>{
+      console.log(error);
+    });
+        //window.location.reload(false);
+
+ }
 
   render(){
   return (
@@ -288,7 +314,22 @@ assign1= () =>{
                     <Table data={this.state.dataUpcomingEvent}/>}       
                     </div>
                     <div class={this.state.tabthird} id="settings">
-                      third
+                      <table class="table">
+                        <tbody>
+                          <tr>
+                          {this.state.dataGroups===null?null:this.state.dataGroups.map(groups => (
+
+                            <div>
+                          <div class="row">
+                           <p class="col-lg-4"> {groups['groupName']} </p>                          
+                         </div>
+                          <hr /> 
+                          </div>
+                        ))}
+                        
+                          </tr>                          
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
