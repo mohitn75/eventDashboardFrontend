@@ -23,7 +23,7 @@ import updateEvent from './components/creator/updateEvent';
 
 const stack= (
      
-   < BrowserRouter >
+   <BrowserRouter>
       <div>
         
          <Route exact path="/" component={App} />
@@ -43,7 +43,7 @@ const stack= (
          <Route path="/view-events" component={viewEvents} />
 
       </div>
-   </ BrowserRouter >
+   </BrowserRouter >
 );
 
 ReactDOM.render(

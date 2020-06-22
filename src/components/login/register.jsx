@@ -36,29 +36,10 @@ class Register extends React.Component {
   handleChange5(event) {
     this.setState({cpassword: event.target.value});
   }
-  componentDidMount(){
-    this.assign();
-  }
-  assign = () => {
-    var config = {
-    method: 'post',
-    url: 'http://localhost:8080/api/addUser' ,
-    headers: { 
-       "X-Requested-With" : "XMLHttpRequest",
-       'Authorization': 'Basic ' + window.btoa(this.state.email + ":" + this.state.password),
-        'Content-Type': 'application/json' } 
-    };
-    axios(config)
-    .then( (response) => {
-      
-    })
-    .catch((error) =>{
-      console.log(error);
-    });
-    }
+  
   register = () => {
-    console.log(this.state.email);
-    console.log(this.state.password);
+    //console.log(this.state.email);
+    //console.log(this.state.password);
     if(this.state.password !== this.state.cpassword){
       alert('Passwords do not match');
       window.location.reload(false);
@@ -73,7 +54,7 @@ class Register extends React.Component {
     });
     var config = {
     method: 'post',
-    url: 'http://localhost:8080/api/addUser',
+    url: 'http://backendproject-emb.apps.123.252.203.195.nip.io/api/addUser',
     headers: { 
     'Content-Type': 'application/json'
     },
@@ -83,15 +64,22 @@ class Register extends React.Component {
 
     axios(config)
     .then( (response) => {
-      window.location.reload(false);
+      
+      if(response.data==="Email already exists")
+        alert("Error! Email already exists.")
+      else 
+      {
+        alert("Registered Successfully! Please verify your Email")
+        window.location.reload(false); 
+      } 
     })
     .catch((error) =>{
-      console.log(error);
+      alert("Error occurred in the server, Sorry for the inconvenience :(");
     });
     /*const url = "localhost:8080/events";
     const res = fetch(url);
     const data = res.json();
-    console.log(data);
+    //console.log(data);
     */
     // 
   }
@@ -100,9 +88,7 @@ class Register extends React.Component {
     return (
       <div className="base-container" ref={this.props.containerRef}>
         <div className="content">
-          <div className="image">
-            <img src={loginImg} alt="logo"/>
-          </div>
+          
           <div className="form">
           <div className="form-group">
               <label htmlFor="email">Email</label>

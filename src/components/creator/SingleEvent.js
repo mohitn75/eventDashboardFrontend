@@ -59,6 +59,15 @@ class SingleEvent extends React.Component {
                         </div>
                       </div>
                     </div>
+                    <br />
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Type</label>
+                          <label type="text" class="form-control">{data['type']}</label>
+                        </div>
+                      </div>
+                    </div>
                     <br/>
                     <div class="row">
                       <div class="col-md-9">

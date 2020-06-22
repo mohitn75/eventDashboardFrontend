@@ -13,7 +13,7 @@ class  CDash extends React.Component {
   componentWillMount(){
     var user_id = sessionStorage.getItem("user_id");
     var user_role = sessionStorage.getItem("user_role");
-    if(user_id===null || user_role !== 'CREATOR')
+    if(user_id===null || user_role === 'USER')
       this.props.history.push('/') 
   }
 
@@ -21,7 +21,7 @@ class  CDash extends React.Component {
       super(props);
       this.state = {
         dataUpcomingEvent : null,
-
+        eventsToday:null,
         data : null,
         e_id : null,
         u_id : null,
@@ -31,44 +31,47 @@ class  CDash extends React.Component {
   third:"nav-link",
   tabfirst:"tab-pane active",
   tabsecond:"tab-pane ",
-  tabthird:"tab-pane "
+  tabthird:"tab-pane ",
+  dataGroups:null
       };
     }
     componentDidMount(){
         this.assign();
         this.assign1();
+        this.assign2();
+        this.getEventsToday();
     }
     assign= () =>{
     var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
     var user_id = sessionStorage.getItem("user_id");
     var config = {
     method: 'get',
-    url: 'http://localhost:8080/api/getPendingEvents/' + user_id ,
+    url: 'http://backendproject-emb.apps.123.252.203.195.nip.io/api/getPendingEvents/' + user_id ,
     headers: { 
                   "X-Requested-With" : "XMLHttpRequest",
                     authorization: auth } 
     };
     axios(config)
     .then( (response) => {
-      console.log(JSON.stringify(response.data));
-      console.log(response.data );
+      //console.log(JSON.stringify(response.data));
+      //console.log(response.data );
       if(response.data.length!==0)
       this.setState({data:response.data});
-      console.log(this.state.data );
+      //console.log(this.state.data );
     })
     .catch((error) =>{
-      console.log(error);
+      alert("Error occurred in the server, Sorry for the inconvenience :(");
     });
     }
   accept = (eventID) =>{
 
     var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
     var user_id = sessionStorage.getItem("user_id");
-    console.log(user_id);
+    //console.log(user_id);
 
     var config = {
     method: 'post',
-    url: 'http://localhost:8080/api/accept/' + user_id  +'/' + eventID ,    
+    url: 'http://backendproject-emb.apps.123.252.203.195.nip.io/api/accept/' + user_id  +'/' + eventID ,    
     headers: { 
       'Content-Type': 'application/json',
       "X-Requested-With" : "XMLHttpRequest",
@@ -78,8 +81,8 @@ class  CDash extends React.Component {
   .then(function (response) {      
   })
   .catch(function (error) {
-    console.log(error);
-    console.log("error");
+    alert("Error occurred in the server, Sorry for the inconvenience :(");
+    //console.log("error");
   });
   window.location.reload(false);
   }
@@ -87,10 +90,10 @@ class  CDash extends React.Component {
   reject = (eventID) =>{
       var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
       var user_id = sessionStorage.getItem("user_id");
-      console.log(user_id);
+      //console.log(user_id);
       var config = {
       method: 'post',
-      url: 'http://localhost:8080/api/reject/' + user_id  +'/' + eventID ,    
+      url: 'http://backendproject-emb.apps.123.252.203.195.nip.io/api/reject/' + user_id  +'/' + eventID ,    
       headers: { 
         'Content-Type': 'application/json',
         "X-Requested-With" : "XMLHttpRequest",
@@ -101,8 +104,8 @@ class  CDash extends React.Component {
     .then(function (response) {      
     })
     .catch(function (error) {
-      console.log(error);
-      console.log("error");
+      alert("Error occurred in the server, Sorry for the inconvenience :(");
+      //console.log("error");
     });
     window.location.reload(false);
   }
@@ -113,7 +116,7 @@ assign1= () =>{
     var user_id = sessionStorage.getItem("user_id");
     var config = {
     method: 'get',
-    url: 'http://localhost:8080/api/getEventDashboard/' + user_id ,
+    url: 'http://backendproject-emb.apps.123.252.203.195.nip.io/api/getEventDashboard/' + user_id ,
     headers: { 
                   "X-Requested-With" : "XMLHttpRequest",
                     'Authorization': auth }
@@ -121,14 +124,66 @@ assign1= () =>{
     };
     axios(config)
     .then( (response) => {
-      console.log(JSON.stringify(response.data));
-      console.log(response.data );
+      //console.log(JSON.stringify(response.data));
+      //console.log(response.data );
       if(response.data.length!==0)
       this.setState({dataUpcomingEvent:response.data});
-      console.log(this.state.dataUpcomingEvent );
+      //console.log(this.state.dataUpcomingEvent );
     })
     .catch((error) =>{
-      console.log(error);
+      alert("Error occurred in the server, Sorry for the inconvenience :(");
+    });
+        //window.location.reload(false);
+
+ }
+ 
+ getEventsToday= () =>{
+  var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
+    var user_id = sessionStorage.getItem("user_id");
+    var config = {
+            method: 'get',
+            url:'http://backendproject-emb.apps.123.252.203.195.nip.io/api/getEventsToday/'+user_id,
+            headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    authorization: auth }
+            };
+    axios(config)
+    .then( (response) => {
+      if(response.data!==0)
+      this.setState({eventsToday:response.data});
+      //console.log(this.state.dataUpcomingEvent );
+    })
+    .catch((error) =>{
+      alert("Error occurred in the server, Sorry for the inconvenience :(");
+    });
+        //window.location.reload(false);
+
+ }
+
+
+ 
+
+ assign2= () =>{
+  var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
+    var user_id = sessionStorage.getItem("user_id");
+    var config = {
+    method: 'get',
+    url: 'http://backendproject-emb.apps.123.252.203.195.nip.io/api/getGroupByUser/' + user_id ,
+    headers: { 
+                  "X-Requested-With" : "XMLHttpRequest",
+                    'Authorization': auth }
+  
+    };
+    axios(config)
+    .then( (response) => {
+      //console.log(JSON.stringify(response.data));
+      //console.log(response.data );
+      if(response.data.length!==0)
+      this.setState({dataGroups:response.data});
+      //console.log(this.state.dataGroups );
+    })
+    .catch((error) =>{
+      alert("Error occurred in the server, Sorry for the inconvenience :(");
     });
         //window.location.reload(false);
 
@@ -169,7 +224,7 @@ assign1= () =>{
                     <i class="material-icons">I</i>
                   </div>
                   <p class="card-category">New Invites</p>
-                  <h3 class="card-title">3</h3>
+                  <h3 class="card-title">{sessionStorage.getItem("lenAl")}</h3>
                 </div>
                 <div class="card-footer">
                   <div class="stats">
@@ -202,7 +257,7 @@ assign1= () =>{
                     <i class="fa fa-twitter">I</i>
                   </div>
                   <p class="card-category">Scheduled Today</p>
-                  <h3 class="card-title">2</h3>
+                  <h3 class="card-title">{this.state.eventsToday===null?0:this.state.eventsToday}</h3>
                 </div>
                 <div class="card-footer">
                   <div class="stats">
@@ -288,7 +343,22 @@ assign1= () =>{
                     <Table data={this.state.dataUpcomingEvent}/>}       
                     </div>
                     <div class={this.state.tabthird} id="settings">
-                      third
+                      <table class="table">
+                        <tbody>
+                          <tr>
+                          {this.state.dataGroups===null?null:this.state.dataGroups.map(groups => (
+
+                            <div>
+                          <div class="row">
+                           <p class="col-lg-4"> {groups['groupName']} </p>                          
+                         </div>
+                          <hr /> 
+                          </div>
+                        ))}
+                        
+                          </tr>                          
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>

@@ -30,7 +30,7 @@ assign= () =>{
 var user_id = sessionStorage.getItem("user_id");
   var config = {
   method: 'get',
-  url: 'http://localhost:8080/api/eventsByUserId/'+user_id,
+  url: 'http://backendproject-emb.apps.123.252.203.195.nip.io/api/eventsByUserId/'+user_id,
 headers: { 
                   "X-Requested-With" : "XMLHttpRequest",
                     'Authorization': auth }
@@ -38,13 +38,14 @@ headers: {
   };
 axios(config)
 .then( (response) => {
-  console.log(JSON.stringify(response.data));
-  console.log(response.data);
+  //console.log(JSON.stringify(response.data));
+  //console.log(response.data);
   this.setState({data:response.data});
-  console.log(this.state.data);
+  //console.log(this.state.data);
 })
 .catch((error) =>{
-  console.log(error);
+  //alert("Error occurred in the server, Sorry for the inconvenience :(");
+  alert(error)
 });
 }
 

@@ -9,7 +9,7 @@ class ClistEvents extends React.Component {
   componentWillMount(){
     var user_id = sessionStorage.getItem("user_id");
     var user_role = sessionStorage.getItem("user_role");
-    if(user_id===null || user_role !== 'CREATOR')
+    if(user_id===null || user_role === 'USER')
       this.props.history.push('/') 
   }
   componentDidMount(){
@@ -32,12 +32,12 @@ class ClistEvents extends React.Component {
     });
   }
   assign= () =>{
-    console.log(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass"))
+    //console.log(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass"))
     var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
   var user_email = sessionStorage.getItem("user_email");
   var config = {
   method: 'get',
-  url:'http://localhost:8080/api/findEventByHost/'+user_email,
+  url:'http://backendproject-emb.apps.123.252.203.195.nip.io/api/findEventByHost/'+user_email,
   headers: { 
                   "X-Requested-With" : "XMLHttpRequest",
                     'Authorization': auth }
@@ -48,7 +48,7 @@ class ClistEvents extends React.Component {
     
   })
   .catch((error) =>{
-    console.log(error);
+    alert("Error occurred in the server, Sorry for the inconvenience :(");
   });
   }
  

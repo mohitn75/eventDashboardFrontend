@@ -8,7 +8,7 @@ class newEvent extends React.Component {
 componentWillMount(){
     var user_id = sessionStorage.getItem("user_id");
     var user_role = sessionStorage.getItem("user_role");
-    if(user_id===null || user_role !== 'CREATOR')
+    if(user_id===null || user_role === 'USER')
       this.props.history.push('/') 
   }
   constructor(props) {
@@ -82,7 +82,7 @@ var config = {
 
 
   method: 'post',
-  url: 'http://localhost:8080/api/addEvent',
+  url: 'http://backendproject-emb.apps.123.252.203.195.nip.io/api/addEvent',
   headers: { 
     "X-Requested-With" : "XMLHttpRequest",
     'Authorization': auth ,
@@ -93,15 +93,15 @@ var config = {
 //alert(data)
 axios(config)
 .then(function (response) {
-  //console.log(JSON.stringify(response.data));
+  ////console.log(JSON.stringify(response.data));
   alert("Event added !")
 })
 .catch(function (error) {
   alert(error)
   //alert(this.state.st_date)
   //alert(this.state.st_time)
-  //console.log(error.data);
-  //console.log("error");
+  ////console.log(error.data);
+  ////console.log("error");
 });
 
   }
@@ -116,7 +116,7 @@ assign= () =>{
  var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
   var config = {
   method: 'get',
-  url: 'http://localhost:8080/api/getEmails',
+  url: 'http://backendproject-emb.apps.123.252.203.195.nip.io/api/getEmails',
   headers: { 
     "X-Requested-With" : "XMLHttpRequest",
     'Authorization': auth },
@@ -128,7 +128,7 @@ axios(config)
   this.setState({items:response.data});
 })
 .catch((error) =>{
-  console.log(error);
+  alert("Error occurred in the server, Sorry for the inconvenience :(");
 });
 } 
 
@@ -137,7 +137,7 @@ assign1= () =>{
  var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
   var config = {
   method: 'get',
-  url: 'http://localhost:8080/api/getGroupNames',
+  url: 'http://backendproject-emb.apps.123.252.203.195.nip.io/api/getGroupNames',
   headers: { 
     "X-Requested-With" : "XMLHttpRequest",
     'Authorization': auth },
@@ -149,7 +149,7 @@ axios(config)
   this.setState({items1:response.data});
 })
 .catch((error) =>{
-  console.log(error);
+  alert("Error occurred in the server, Sorry for the inconvenience :(");
 });
 } 
   onTextChanged = (e) => {
@@ -179,7 +179,7 @@ axios(config)
             const regex = new RegExp(`${value}`,'i');
             suggestions = this.state.items.sort().filter(v => regex.test(v));
         }
-        console.log("rtext" + this.state.rtext);
+        //console.log("rtext" + this.state.rtext);
         this.setState(() => ({ suggestions , text : lol })); 
         this.setState({action:lol})
     }
@@ -230,14 +230,14 @@ axios(config)
         else{
           lol1 = value;
         }
-        console.log("value " + value);
-        console.log("lol" + lol1);
+        //console.log("value " + value);
+        //console.log("lol" + lol1);
         let suggestions1 = [];
         if(value.length > 0){
             const regex = new RegExp(`${value}`,'i');
             suggestions1 = this.state.items1.sort().filter(v => regex.test(v));
         }
-        console.log("rtext" + this.state.rtext1);
+        //console.log("rtext" + this.state.rtext1);
         this.setState(() => ({ suggestions1 , text1 : lol1 })); 
         this.setState({action:lol1})
     }
@@ -413,11 +413,22 @@ axios(config)
                     
                     <br />
                     <div class="row">
-                      <div class="col-md-9">
+                      <div class="col-md-8">
                         <div class="form-group">
                           <label class="bmd-label-floating">Event Type</label>
                           <input type="text" class="form-control" 
                           name = "type"
+                          //value = {this.state.password}
+                          onChange={this.handleChange} />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Place</label>
+                          <input type="text" class="form-control" 
+                          name = "place"
                           //value = {this.state.password}
                           onChange={this.handleChange} />
                         </div>

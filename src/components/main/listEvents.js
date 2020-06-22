@@ -32,13 +32,13 @@ class listEvents extends React.Component {
     });
   }
   assign= () =>{
-    console.log(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass"))
+    //console.log(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass"))
     var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
   //var user_email = sessionStorage.getItem("user_email");
   var user_id = sessionStorage.getItem("user_id");
   var config = {
   method: 'get',
-  url:'http://localhost:8080/api/eventsForUser/'+user_id,
+  url:'http://backendproject-emb.apps.123.252.203.195.nip.io/api/eventsForUser/'+user_id,
   headers: { 
                   "X-Requested-With" : "XMLHttpRequest",
                     'Authorization': auth }
@@ -49,7 +49,7 @@ class listEvents extends React.Component {
     
   })
   .catch((error) =>{
-    console.log(error);
+    alert("Error occurred in the server, Sorry for the inconvenience :(");
   });
   }
  
