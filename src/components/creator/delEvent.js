@@ -34,7 +34,7 @@ class delEvent extends React.Component {
   componentWillMount(){
     var user_id = sessionStorage.getItem("user_id");
     var user_role = sessionStorage.getItem("user_role");
-    if(user_id===null || user_role !== 'USER')
+    if(user_id===null || user_role === 'USER')
       this.props.history.push('/') 
   }
 componentDidMount(){
@@ -147,8 +147,7 @@ if(window.confirm("Do you want to delete event \nID :"+id+"\nTitle :"+title)){
                                   
                     </tbody>
                   </table>
-                  <button class="btn btn-warning pull-right \" 
-                    onClick={()=>this.functionAlert()}>Delete</button>
+                  
                 </div>
                }
                 </div>

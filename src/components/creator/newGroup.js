@@ -151,7 +151,6 @@ getnames= () =>{
     "creatorEmail":sessionStorage.getItem("user_email"),
     "email":this.state.email
 });
-alert(data);
 var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
 var config = {
 
