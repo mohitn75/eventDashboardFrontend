@@ -40,6 +40,7 @@ class  Dash extends React.Component {
         this.assign1();
         this.assign2();
         this.getEventsToday();
+
     }
     assign= () =>{
     var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
@@ -137,6 +138,7 @@ assign1= () =>{
 
  }
  
+
 getEventsToday= () =>{
   var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
     var user_id = sessionStorage.getItem("user_id");
@@ -166,6 +168,7 @@ assign2= () =>{
     var config = {
     method: 'get',
     url: 'http://backendproject-emb.apps.123.252.203.195.nip.io/api/getGroupByUser/' + user_id ,
+
     headers: { 
                   "X-Requested-With" : "XMLHttpRequest",
                     'Authorization': auth }
