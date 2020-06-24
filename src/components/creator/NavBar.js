@@ -24,7 +24,7 @@ class NavBar extends React.Component {
     var user_id = sessionStorage.getItem("user_id");
     var config1 = {
             method: 'get',
-            url:'http://localhost:8080/api/alertsCountNewEvent/'+user_id,
+            url:'http://backendproject-emb.apps.123.252.203.195.nip.io/api/alertsCountNewEvent/'+user_id,
             headers: { 
                   "X-Requested-With" : "XMLHttpRequest",
                     authorization: auth }
@@ -39,18 +39,18 @@ class NavBar extends React.Component {
               this.notifyA(sessionStorage.getItem("lenAl"))}
           })
         .catch((error) =>{
-        console.log(error);
+        //alert("Error occurred in the server, Sorry for the inconvenience :(");
         });
-            }, 3000);
+            }, 10000);
     } 
     catch(e){
-            console.log(e);
+            //console.log(e);
     }
     
     var config2 = {
       
             method: 'get',
-            url:'http://localhost:8080/api/alertsCountEventIn15Min/'+user_id,
+            url:'http://backendproject-emb.apps.123.252.203.195.nip.io/api/alertsCountEventIn15Min/'+user_id,
             headers: { 
                   "X-Requested-With" : "XMLHttpRequest",
                     authorization: auth }
@@ -71,12 +71,12 @@ class NavBar extends React.Component {
               }
           })
         .catch((error) =>{
-        console.log(error);
+        //alert("Error occurred in the server, Sorry for the inconvenience :(");
         });
-            }, 3000);
+            }, 10000);
     } 
     catch(e){
-            console.log(e);
+            //console.log(e);
     }
 
 

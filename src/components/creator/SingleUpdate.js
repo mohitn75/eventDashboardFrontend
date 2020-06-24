@@ -23,7 +23,7 @@ class SingleUpdate extends React.Component {
     st_time :"",
     en_date :"",
     en_time :"",
-    
+    place:"",
     type :"",
     current:"newevent",
     
@@ -63,18 +63,19 @@ class SingleUpdate extends React.Component {
           
             var data = JSON.stringify(
             {
+            "event_id": this.state.data['id'],
             "title": this.state.title,
             "description":this.state.desc,
             "place":this.state.place,
-            "type":this.state.type,
             "startDateTime":start,
             "endDateTime":end,
+            "type":this.state.type
             });
           alert(JSON.stringify(data))
             var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
         var config = {
         method: 'post',
-        url: 'http://localhost:8080/api/updateEvent',
+        url: 'http://backendproject-emb.apps.123.252.203.195.nip.io/api/updateEvent',
         headers: { 
                   "X-Requested-With" : "XMLHttpRequest",
                     'Authorization': auth ,
@@ -84,12 +85,12 @@ class SingleUpdate extends React.Component {
 
             axios(config)
             .then(function (response) {
-            console.log(JSON.stringify(response.data));
+            //console.log(JSON.stringify(response.data));
             
             })
             .catch(function (error) {
-            console.log(error);
-            console.log("error");
+            alert("Error occurred in the server, Sorry for the inconvenience :(");
+            //console.log("error");
             });
     }
     

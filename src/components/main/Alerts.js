@@ -36,7 +36,7 @@ class Alerts extends React.Component {
   var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
   var config = {
   method: 'get',
-  url:'http://localhost:8080/api/alertsNewEvent/'+user_id,
+  url:'http://backendproject-emb.apps.123.252.203.195.nip.io/api/alertsNewEvent/'+user_id,
   headers: { 
                   "X-Requested-With" : "XMLHttpRequest",
                     'Authorization': auth }
@@ -56,7 +56,7 @@ class Alerts extends React.Component {
   var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
   var config = {
   method: 'get',
-  url:'http://localhost:8080/api/alertsEventIn15Min/'+user_id,
+  url:'http://backendproject-emb.apps.123.252.203.195.nip.io/api/alertsEventIn15Min/'+user_id,
   headers: { 
                   "X-Requested-With" : "XMLHttpRequest",
                     'Authorization': auth }

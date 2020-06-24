@@ -12,7 +12,7 @@ class CAlerts extends React.Component {
   componentWillMount(){
     var user_id = sessionStorage.getItem("user_id");
     var user_role = sessionStorage.getItem("user_role");
-    if(user_id===null || user_role !== 'CREATOR')
+    if(user_id===null || user_role === 'USER')
       this.props.history.push('/') 
     store.removeNotification(1)
     sessionStorage.setItem("lenAl", JSON.stringify(0))
@@ -34,7 +34,7 @@ class CAlerts extends React.Component {
   var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
   var config = {
   method: 'get',
-  url:'http://localhost:8080/api/alertsNewEvent/'+user_id,
+  url:'http://backendproject-emb.apps.123.252.203.195.nip.io/api/alertsNewEvent/'+user_id,
   headers: { 
                   "X-Requested-With" : "XMLHttpRequest",
                     'Authorization': auth }
@@ -54,7 +54,7 @@ class CAlerts extends React.Component {
   var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
   var config = {
   method: 'get',
-  url:'http://localhost:8080/api/alertsEventIn15Min/'+user_id,
+  url:'http://backendproject-emb.apps.123.252.203.195.nip.io/api/alertsEventIn15Min/'+user_id,
   headers: { 
                   "X-Requested-With" : "XMLHttpRequest",
                     'Authorization': auth }
@@ -142,66 +142,3 @@ class CAlerts extends React.Component {
 }
 }
 export default withRouter(CAlerts);
-
-/* {this.state.alertData===null ? null :
-      <ul class="nav" >
-        {this.state.alertData.map(listitem => (
-            <li className="nav-item">
-            
-              {listitem['title']}
-              <p>{listitem['description']}</p>
-              
-            </li>
-          ))}
-      </ul>
-      }*/
-  /* var user_id = sessionStorage.getItem("user_id");
-    var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
-  try {
-        setInterval(async () => {
-            await axios.get('http://localhost:8080/api/alertsNewEvent/'+user_id,
-            {headers: { 
-                  "X-Requested-With" : "XMLHttpRequest",
-                    authorization: auth }})
-        .then( (response) => {
-          if(JSON.stringify(response.data.length)!==sessionStorage.getItem("lenAl"))
-              {
-              //sessionStorage.setItem("lenAl",JSON.stringify(response.data))
-              this.setState({alertData:response.data});
-
-              }
-          })
-        .catch((error) =>{
-        console.log(error);
-        });
-            }, 3000);
-    } 
-    catch(e){
-            console.log(e);
-    }
-
-    try {
-        setInterval(async () => {
-            await axios.get('http://localhost:8080/api/alertsEventIn15Min/'+user_id,
-            {headers: { 
-                  "X-Requested-With" : "XMLHttpRequest",
-                    authorization: auth }})
-        .then( (response) => {
-          
-          if(JSON.stringify(response.data.length)!==sessionStorage.getItem("lenRem"))
-              {
-              //sessionStorage.setItem("lenRem", JSON.stringify(response.data))
-              //alert(response.data.length)
-              this.setState({remData:response.data});
-              }
-          })
-        .catch((error) =>{
-        console.log(error);
-        });
-            }, 3000);
-    } 
-    catch(e){
-            console.log(e);
-    }
-
-*/

@@ -15,7 +15,7 @@ class CCalendar extends React.Component {
 componentWillMount(){
     var user_id = sessionStorage.getItem("user_id");
     var user_role = sessionStorage.getItem("user_role");
-    if(user_id===null || user_role !== 'CREATOR')
+    if(user_id===null || user_role === 'USER')
       this.props.history.push('/') 
   }
 
@@ -29,7 +29,7 @@ assign= () =>{
 var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
   var config = {
   method: 'get',
-  url: 'http://localhost:8080/api/eventsByUserId/'+user_id,
+  url: 'http://backendproject-emb.apps.123.252.203.195.nip.io/api/eventsByUserId/'+user_id,
   headers: { 
                   "X-Requested-With" : "XMLHttpRequest",
                     authorization: auth }
@@ -38,10 +38,10 @@ var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + se
 axios(config)
 .then( (response) => {
   this.setState({data:response.data});
-  console.log(this.state.data);
+  //console.log(this.state.data);
 })
 .catch((error) =>{
-  console.log(error);
+  alert("Error occurred in the server, Sorry for the inconvenience :(");
 });
 }
 
@@ -54,10 +54,6 @@ axios(config)
    <div class=" main-panel jumbotron">
     <FullCalendar defaultView="dayGridMonth" plugins={[ dayGridPlugin ]}
       events={this.state.data}
-      /*{[
-    { title: 'event 1', date: '2020-06-01T19:30' },
-    { title: 'event 2', date: '2020-06-02' }
-  ]}*/
    /></div>
   </div>
 </div>   

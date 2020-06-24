@@ -10,6 +10,16 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  componentWillMount(){
+    var user_id = sessionStorage.getItem("user_id");
+    var user_role = sessionStorage.getItem("user_role");
+    if(user_id!==null)
+      if(user_role === 'USER')
+        this.props.history.push('/dash') 
+      else if(user_role === 'CREATOR'|| user_role==='ADMIN')
+        this.props.history.push('/creator-dash')
+  }
+
   state = {
     email : "",
     password : "",
@@ -22,14 +32,14 @@ class Login extends React.Component {
   }
    signUp = () => {
 
-     axios.get("http://localhost:8080/login",          
+     axios.get("http://backendproject-emb.apps.123.252.203.195.nip.io/login",          
      { headers: { 
        "X-Requested-With" : "XMLHttpRequest",
        authorization: 'Basic ' + window.btoa(this.state.email + ":" + this.state.password) } }
              )
              .then((response) => {
                 
-                axios.get("http://localhost:8080/api/userByEmail/"+this.state.email,
+                axios.get("http://backendproject-emb.apps.123.252.203.195.nip.io/api/userByEmail/"+this.state.email,
                 {headers: { 
                   "X-Requested-With" : "XMLHttpRequest",
                     authorization: 'Basic ' + window.btoa(this.state.email + ":" + this.state.password) }})

@@ -12,7 +12,7 @@ class newGroup extends React.Component {
   componentWillMount(){
     var user_id = sessionStorage.getItem("user_id");
     var user_role = sessionStorage.getItem("user_role");
-    if(user_id===null || user_role !== 'CREATOR')
+    if(user_id===null || user_role === 'USER')
       this.props.history.push('/') 
   }
 
@@ -40,7 +40,7 @@ assign= () =>{
 var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
   var config = {
   method: 'get',
-  url: 'http://localhost:8080/api/getEmails',
+  url: 'http://backendproject-emb.apps.123.252.203.195.nip.io/api/getEmails',
   headers: { 
                   "X-Requested-With" : "XMLHttpRequest",
                     'Authorization': auth 
@@ -59,7 +59,7 @@ axios(config)
 
 getnames= () =>{
   var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
-  axios.get('http://localhost:8080/api/getGroupNames',{
+  axios.get('http://backendproject-emb.apps.123.252.203.195.nip.io/api/getGroupNames',{
     headers: { 
                   "X-Requested-With" : "XMLHttpRequest",
                     authorization: auth,
@@ -69,7 +69,7 @@ getnames= () =>{
     //alert(this.state.groupnames)
   })
   .catch((error) =>{
-    //console.log(error);
+    //alert("Error occurred in the server, Sorry for the inconvenience :(");
     alert("error")
   });
   }
@@ -96,18 +96,18 @@ getnames= () =>{
         else{
           lol = value;
         }
-        console.log("value " + value);
-        console.log("lol" + lol);
+        //console.log("value " + value);
+        //console.log("lol" + lol);
         let suggestions = [];
         if(value.length > 0){
             const regex = new RegExp(`${value}`,'i');
             suggestions = this.state.items.sort().filter(v => regex.test(v));
         }
-        console.log("rtext" + this.state.rtext);
+        //console.log("rtext" + this.state.rtext);
         this.setState(() => ({ suggestions , text : lol })); 
 
         this.setState({email:lol})
-        console.log(lol)
+        //console.log(lol)
         
     }
 
@@ -151,13 +151,12 @@ getnames= () =>{
     "creatorEmail":sessionStorage.getItem("user_email"),
     "email":this.state.email
 });
-alert(data);
 var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
 var config = {
 
 
   method: 'post',
-  url: 'http://localhost:8080/api/addGroup',
+  url: 'http://backendproject-emb.apps.123.252.203.195.nip.io/api/addGroup',
   headers: { 
                   "X-Requested-With" : "XMLHttpRequest",
                     authorization: auth ,
@@ -170,7 +169,7 @@ axios(config)
   this.notify()
 })
 .catch(function (error) {
-  console.log(error);
+  alert("Error occurred in the server, Sorry for the inconvenience :(");
 });
 
   }

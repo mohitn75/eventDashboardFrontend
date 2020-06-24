@@ -34,7 +34,7 @@ class delEvent extends React.Component {
   componentWillMount(){
     var user_id = sessionStorage.getItem("user_id");
     var user_role = sessionStorage.getItem("user_role");
-    if(user_id===null || user_role !== 'CREATOR')
+    if(user_id===null || user_role === 'USER')
       this.props.history.push('/') 
   }
 componentDidMount(){
@@ -52,7 +52,7 @@ assign= () =>{
   var user_email = sessionStorage.getItem("user_email");
   var config = {
   method: 'get',
-  url: 'http://localhost:8080/api/findEventByHost/'+user_email,
+  url: 'http://backendproject-emb.apps.123.252.203.195.nip.io/api/findEventByHost/'+user_email,
   headers: { 
                   "X-Requested-With" : "XMLHttpRequest",
                     authorization: auth }
@@ -64,7 +64,7 @@ axios(config)
     this.setState({data:response.data});
 })
 .catch((error) =>{
-  console.log(error);
+  alert("Error occurred in the server, Sorry for the inconvenience :(");
 });
 }
 
@@ -76,7 +76,7 @@ if(window.confirm("Do you want to delete event \nID :"+id+"\nTitle :"+title)){
     var auth ='Basic ' + window.btoa(sessionStorage.getItem("user_email") + ":" + sessionStorage.getItem("user_pass")) 
   var config = {
   method: 'delete',
-  url: 'http://localhost:8080/api/deleteEvent/'+id,
+  url: 'http://backendproject-emb.apps.123.252.203.195.nip.io/api/deleteEvent/'+id,
   headers: { 
     "X-Requested-With" : "XMLHttpRequest",
      authorization: auth }
@@ -97,7 +97,7 @@ if(window.confirm("Do you want to delete event \nID :"+id+"\nTitle :"+title)){
   
     render(){
      // const ax = this.fetch()
-      //console.log(ax);
+      ////console.log(ax);
       //this.assign();
       
       
@@ -147,8 +147,7 @@ if(window.confirm("Do you want to delete event \nID :"+id+"\nTitle :"+title)){
                                   
                     </tbody>
                   </table>
-                  <button class="btn btn-warning pull-right \" 
-                    onClick={()=>this.functionAlert()}>Delete</button>
+                  
                 </div>
                }
                 </div>
